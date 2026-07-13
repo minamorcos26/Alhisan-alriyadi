@@ -3,7 +3,18 @@
     <div class="hero-slider__track" data-slider-track>
       {%- for block in section.blocks -%}
         {%- assign coll = block.settings.collection -%}
-        {%- assign slide_image = block.settings.image | default: coll.image | default: coll.products.first.featured_image -%}
+        {%- assign slide_image = block.settings.image -%}
+        {%- unless slide_image -%}{%- assign slide_image = coll.image -%}{%- endunless -%}
+        {%- unless slide_image -%}
+          {%- comment -%} Pick the largest available product photo in the collection instead of blindly using the first product, whose image may be a tiny icon-style photo that looks blank when stretched into a wide banner. {%- endcomment -%}
+          {%- assign best_width = 0 -%}
+          {%- for p in coll.products limit: 12 -%}
+            {%- if p.featured_image.width > best_width -%}
+              {%- assign slide_image = p.featured_image -%}
+              {%- assign best_width = p.featured_image.width -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endunless -%}
         {%- assign slide_alt = block.settings.heading | default: coll.title -%}
         {%- assign loading_attr = 'lazy' -%}
         {%- if forloop.first -%}{%- assign loading_attr = 'eager' -%}{%- endif -%}

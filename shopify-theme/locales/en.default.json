@@ -111,6 +111,7 @@
       "sku": "SKU",
       "added": "Added",
       "zoom": "Zoom image",
+      "tap_zoom": "Tap",
       "size_guide": "Size Guide",
       "size_guide_heading": "Size Guide",
       "size_guide_col_size": "Size",
