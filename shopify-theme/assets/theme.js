@@ -302,35 +302,37 @@
   }
 
   function initQuickAdd() {
-    document.querySelectorAll('.product-card__form').forEach(function (form) {
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var btn = form.querySelector('.product-card__cart-btn');
-        if (!btn || btn.disabled) return;
-        var originalHtml = btn.innerHTML;
-        btn.disabled = true;
-        btn.classList.add('is-loading');
+    // Delegated on document (not per-form) so product cards appended later by
+    // infinite scroll are covered without needing to be re-initialized.
+    document.addEventListener('submit', function (e) {
+      var form = e.target.closest('.product-card__form');
+      if (!form) return;
+      e.preventDefault();
+      var btn = form.querySelector('.product-card__cart-btn');
+      if (!btn || btn.disabled) return;
+      var originalHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.classList.add('is-loading');
 
-        addToCart(form.querySelector('input[name="id"]').value, 1)
-          .then(function () {
-            btn.classList.remove('is-loading');
-            btn.classList.add('is-added');
-            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m5 13 4 4L19 7"/></svg> ' + (btn.getAttribute('data-added-label') || 'Added');
-            setTimeout(function () {
-              btn.classList.remove('is-added');
-              btn.innerHTML = originalHtml;
-              btn.disabled = false;
-            }, 1600);
-            openCartDrawer();
-            return refreshCartDrawer();
-          })
-          .catch(function () {
-            // Fall back to a normal form submission (full page) if the AJAX call fails
+      addToCart(form.querySelector('input[name="id"]').value, 1)
+        .then(function () {
+          btn.classList.remove('is-loading');
+          btn.classList.add('is-added');
+          btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m5 13 4 4L19 7"/></svg> ' + (btn.getAttribute('data-added-label') || 'Added');
+          setTimeout(function () {
+            btn.classList.remove('is-added');
+            btn.innerHTML = originalHtml;
             btn.disabled = false;
-            btn.classList.remove('is-loading');
-            HTMLFormElement.prototype.submit.call(form);
-          });
-      });
+          }, 1600);
+          openCartDrawer();
+          return refreshCartDrawer();
+        })
+        .catch(function () {
+          // Fall back to a normal form submission (full page) if the AJAX call fails
+          btn.disabled = false;
+          btn.classList.remove('is-loading');
+          HTMLFormElement.prototype.submit.call(form);
+        });
     });
   }
 
