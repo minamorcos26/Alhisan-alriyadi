@@ -21,12 +21,14 @@
     "hero-slider": {
       "type": "hero-slider",
       "blocks": {
-        "slide-1": { "type": "slide", "settings": { "collection": "football-equipment", "heading": "Football Season Is Here", "cta_label": "Shop Football" } },
-        "slide-2": { "type": "slide", "settings": { "collection": "water-sports", "heading": "Dive Into Water Sports", "cta_label": "Shop Water Sports" } },
-        "slide-3": { "type": "slide", "settings": { "collection": "gym-equipment", "heading": "Build Your Home Gym", "cta_label": "Shop Gym Equipment" } },
-        "slide-4": { "type": "slide", "settings": { "collection": "women", "heading": "New Women's Arrivals", "cta_label": "Shop Women" } }
+        "slide-1": { "type": "slide", "settings": { "collection": "football-equipment", "icon": "football", "heading": "Football Season Is Here", "cta_label": "Shop Football" } },
+        "slide-2": { "type": "slide", "settings": { "collection": "water-sports", "icon": "water", "heading": "Dive Into Water Sports", "cta_label": "Shop Water Sports" } },
+        "slide-3": { "type": "slide", "settings": { "collection": "gym-equipment", "icon": "gym", "heading": "Build Your Home Gym", "cta_label": "Shop Gym Equipment" } },
+        "slide-4": { "type": "slide", "settings": { "collection": "women", "icon": "women", "heading": "New Women's Arrivals", "cta_label": "Shop Women" } },
+        "slide-5": { "type": "slide", "settings": { "icon": "new", "heading": "The New Collection", "eyebrow": "Just Arrived", "cta_label": "Shop New Arrivals" } },
+        "slide-6": { "type": "slide", "settings": { "collection": "sale", "icon": "sale", "heading": "Sale Is On", "eyebrow": "Limited Time", "cta_label": "Shop the Sale" } }
       },
-      "block_order": ["slide-1", "slide-2", "slide-3", "slide-4"],
+      "block_order": ["slide-1", "slide-2", "slide-3", "slide-4", "slide-5", "slide-6"],
       "settings": {}
     },
     "value-props": {
