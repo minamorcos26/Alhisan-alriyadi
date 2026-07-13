@@ -108,7 +108,9 @@
       "unavailable": "Unavailable",
       "quantity": "Quantity",
       "description": "Description",
-      "sku": "SKU"
+      "sku": "SKU",
+      "added": "Added",
+      "zoom": "Zoom image"
     },
     "cart": {
       "title": "Your Cart",
@@ -121,7 +123,8 @@
       "price": "Price",
       "quantity": "Quantity",
       "total": "Total",
-      "update": "Update Cart"
+      "update": "Update Cart",
+      "each": "each"
     },
     "404": {
       "heading": "Page Not Found",

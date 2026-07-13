@@ -81,16 +81,25 @@
     </button>
   </div>
   {%- for link in main_menu.links -%}
-    <div class="drawer-group">
-      <a href="{{ link.url }}" class="drawer-group__title-link">{{ link.title }}</a>
-      {%- if link.links.size > 0 -%}
-        <ul>
+    {%- if link.links.size > 0 -%}
+      <div class="drawer-group" data-accordion-group>
+        <div class="drawer-group__row">
+          <a href="{{ link.url }}" class="drawer-group__title-link">{{ link.title }}</a>
+          <button type="button" class="drawer-group__chevron-btn" data-accordion-toggle aria-expanded="false" aria-label="{{ link.title }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="drawer-group__chevron"><path stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg>
+          </button>
+        </div>
+        <ul class="drawer-group__children">
           {%- for child in link.links -%}
             <li><a href="{{ child.url }}">{{ child.title }}</a></li>
           {%- endfor -%}
         </ul>
-      {%- endif -%}
-    </div>
+      </div>
+    {%- else -%}
+      <div class="drawer-group drawer-group--flat">
+        <a href="{{ link.url }}" class="drawer-group__title-link">{{ link.title }}</a>
+      </div>
+    {%- endif -%}
   {%- endfor -%}
 
   {%- if localization.available_languages.size > 1 -%}

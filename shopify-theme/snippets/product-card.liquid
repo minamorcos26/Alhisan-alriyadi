@@ -21,16 +21,9 @@
       <span class="product-card__badge">{{ 'sections.product.sold_out' | t }}</span>
     {%- endunless -%}
 
-    <div class="product-card__quick">
-      {%- if product.available -%}
-        {%- form 'product', product -%}
-          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-          <button type="submit" class="btn btn-primary btn-sm btn-block">{{ 'sections.product.add_to_cart' | t }}</button>
-        {%- endform -%}
-      {%- else -%}
-        <span class="btn btn-ghost btn-sm btn-block">{{ 'sections.product.sold_out' | t }}</span>
-      {%- endif -%}
-    </div>
+    <span class="product-card__zoom-hint" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/><path stroke-linecap="round" d="M11 8v6M8 11h6"/></svg>
+    </span>
   </a>
   <a href="{{ product.url }}" class="product-card__link">
     <span class="product-card__type">{{ product.type }}</span>
@@ -42,4 +35,16 @@
       {{ product.price | money_without_trailing_zeros }}
     </div>
   </a>
+
+  {%- if product.available -%}
+    {%- form 'product', product, class: 'product-card__form' -%}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      <button type="submit" class="product-card__cart-btn" data-added-label="{{ 'sections.product.added' | t }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
+        {{ 'sections.product.add_to_cart' | t }}
+      </button>
+    {%- endform -%}
+  {%- else -%}
+    <button type="button" class="product-card__cart-btn" disabled>{{ 'sections.product.sold_out' | t }}</button>
+  {%- endif -%}
 </article>

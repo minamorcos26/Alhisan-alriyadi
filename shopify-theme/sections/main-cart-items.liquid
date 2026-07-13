@@ -1,48 +1,44 @@
 <div class="container cart-page">
-  <h1>{{ 'sections.cart.title' | t }}</h1>
+  <h1>{{ 'sections.cart.title' | t }} {%- if cart.item_count > 0 -%}<span class="cart-page__count">({{ cart.item_count }})</span>{%- endif -%}</h1>
 
   {%- if cart.item_count > 0 -%}
     {%- form 'cart', cart, class: 'cart-form' -%}
-      <table class="cart-table">
-        <thead>
-          <tr>
-            <th>{{ 'sections.cart.product' | t }}</th>
-            <th>{{ 'sections.cart.price' | t }}</th>
-            <th>{{ 'sections.cart.quantity' | t }}</th>
-            <th>{{ 'sections.cart.total' | t }}</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {%- for item in cart.items -%}
-            <tr>
-              <td class="cart-table__product">
-                <a href="{{ item.url }}" class="cart-table__media">
-                  {%- if item.image -%}
-                    {{ item.image | image_url: width: 160 | image_tag: alt: item.title, loading: 'lazy' }}
-                  {%- endif -%}
-                </a>
-                <div>
-                  <a href="{{ item.url }}" class="cart-table__title">{{ item.product.title }}</a>
-                  {%- unless item.variant.title == 'Default Title' -%}
-                    <div class="cart-table__variant">{{ item.variant.title }}</div>
-                  {%- endunless -%}
-                </div>
-              </td>
-              <td>{{ item.original_price | money_without_trailing_zeros }}</td>
-              <td>
-                <input type="number" name="updates[{{ forloop.index0 }}]" value="{{ item.quantity }}" min="0" class="select" style="width:80px">
-              </td>
-              <td>{{ item.original_line_price | money_without_trailing_zeros }}</td>
-              <td>
-                <a href="{{ item.url_to_remove }}" class="cart-table__remove">{{ 'sections.cart.remove' | t }}</a>
-              </td>
-            </tr>
-          {%- endfor -%}
-        </tbody>
-      </table>
+      <ul class="cart-list">
+        {%- for item in cart.items -%}
+          <li class="cart-row">
+            <a href="{{ item.url }}" class="cart-row__media">
+              {%- if item.image -%}
+                {{ item.image | image_url: width: 200 | image_tag: alt: item.title, loading: 'lazy' }}
+              {%- endif -%}
+            </a>
+
+            <div class="cart-row__info">
+              <a href="{{ item.url }}" class="cart-row__title">{{ item.product.title }}</a>
+              {%- unless item.variant.title == 'Default Title' -%}
+                <div class="cart-row__variant">{{ item.variant.title }}</div>
+              {%- endunless -%}
+              {%- if item.quantity > 1 -%}
+                <div class="cart-row__unit-price">{{ item.original_price | money_without_trailing_zeros }} {{ 'sections.cart.each' | t }}</div>
+              {%- endif -%}
+              <a href="{{ item.url_to_remove }}" class="cart-row__remove">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m-8 0 1 12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2l1-12"/></svg>
+                {{ 'sections.cart.remove' | t }}
+              </a>
+            </div>
+
+            <div class="qty-stepper cart-row__qty">
+              <button type="button" class="qty-stepper__btn" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+              <input type="number" name="updates[{{ forloop.index0 }}]" value="{{ item.quantity }}" min="0" class="qty-stepper__input">
+              <button type="button" class="qty-stepper__btn" data-qty-increase aria-label="Increase quantity">+</button>
+            </div>
+
+            <div class="cart-row__total">{{ item.original_line_price | money_without_trailing_zeros }}</div>
+          </li>
+        {%- endfor -%}
+      </ul>
+
       <div class="cart-summary">
-        <button type="submit" name="update" class="btn btn-ghost">{{ 'sections.cart.update' | t }}</button>
+        <button type="submit" name="update" class="btn btn-ghost cart-summary__update">{{ 'sections.cart.update' | t }}</button>
         <div class="cart-summary__totals">
           <span>{{ 'sections.cart.subtotal' | t }}</span>
           <strong>{{ cart.total_price | money_without_trailing_zeros }}</strong>

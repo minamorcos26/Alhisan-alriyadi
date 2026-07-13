@@ -13,10 +13,12 @@
           <a href="{{ coll.url }}" class="category-tile" {{ block.shopify_attributes }}>
             {%- assign tile_image = coll.image | default: coll.products.first.featured_image -%}
             {%- if tile_image -%}
-              {{ tile_image | image_url: width: 400 | image_tag: loading: 'lazy', widths: '200,300,400', alt: coll.title }}
+              {{ tile_image | image_url: width: 500 | image_tag: loading: 'lazy', widths: '250,375,500', alt: coll.title }}
             {%- endif -%}
-            <span class="category-tile__name">{{ block.settings.label | default: coll.title }}</span>
-            <span class="category-tile__count">{{ coll.all_products_count }} {{ 'sections.main_collection.product_count' | t }}</span>
+            <span class="category-tile__label">
+              <span class="category-tile__name">{{ block.settings.label | default: coll.title }}</span>
+              <span class="category-tile__count">{{ coll.all_products_count }} {{ 'sections.main_collection.product_count' | t }}</span>
+            </span>
           </a>
         {%- endif -%}
       {%- endfor -%}

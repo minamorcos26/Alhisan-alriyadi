@@ -12,16 +12,35 @@
 
 <div class="container product-detail">
   <div class="product-detail__media">
-    {%- if product.featured_image -%}
-      {{ product.featured_image | image_url: width: 900 | image_tag: widths: '450,700,900', alt: product.featured_image.alt | default: product.title, loading: 'eager' }}
-    {%- else -%}
-      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-    {%- endif -%}
+    <div class="product-detail__main-image">
+      {%- if product.compare_at_price > product.price -%}
+        <span class="product-card__badge product-card__badge--sale">{{ 'sections.main_collection.on_sale' | t }}</span>
+      {%- endif -%}
+      {%- unless product.available -%}
+        <span class="product-card__badge">{{ 'sections.product.sold_out' | t }}</span>
+      {%- endunless -%}
+
+      {%- if product.featured_image -%}
+        {{ product.featured_image | image_url: width: 1200 | image_tag:
+          widths: '600,900,1200',
+          alt: product.featured_image.alt | default: product.title,
+          loading: 'eager',
+          data-zoom-src: product.featured_image | image_url: width: 2000
+        }}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+
+      <button type="button" class="product-detail__zoom-btn" data-zoom-trigger aria-label="{{ 'sections.product.zoom' | t }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/><path stroke-linecap="round" d="M11 8v6M8 11h6"/></svg>
+      </button>
+    </div>
+
     {%- if product.images.size > 1 -%}
       <div class="product-detail__thumbs">
-        {%- for image in product.images limit: 6 -%}
-          <button type="button" class="product-detail__thumb" data-thumb data-src="{{ image | image_url: width: 900 }}">
-            {{ image | image_url: width: 140 | image_tag: loading: 'lazy', alt: image.alt }}
+        {%- for image in product.images limit: 8 -%}
+          <button type="button" class="product-detail__thumb{% if forloop.first %} is-active{% endif %}" data-thumb data-src="{{ image | image_url: width: 1200 }}">
+            {{ image | image_url: width: 160 | image_tag: loading: 'lazy', alt: image.alt }}
           </button>
         {%- endfor -%}
       </div>
@@ -57,13 +76,33 @@
 
       <div class="product-option">
         <label class="product-option__label" for="Quantity">{{ 'sections.product.quantity' | t }}</label>
-        <input type="number" id="Quantity" name="quantity" value="1" min="1" class="select" style="width:90px">
+        <div class="qty-stepper">
+          <button type="button" class="qty-stepper__btn" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+          <input type="number" id="Quantity" name="quantity" value="1" min="1" class="qty-stepper__input">
+          <button type="button" class="qty-stepper__btn" data-qty-increase aria-label="Increase quantity">+</button>
+        </div>
       </div>
 
-      <button type="submit" class="btn btn-primary btn-block" {% unless product.available %}disabled{% endunless %}>
-        {%- if product.available -%}{{ 'sections.product.add_to_cart' | t }}{%- else -%}{{ 'sections.product.sold_out' | t }}{%- endif -%}
-      </button>
+      <div class="product-detail__actions">
+        <button type="submit" class="btn btn-primary btn-block" {% unless product.available %}disabled{% endunless %}>
+          {%- if product.available -%}{{ 'sections.product.add_to_cart' | t }}{%- else -%}{{ 'sections.product.sold_out' | t }}{%- endif -%}
+        </button>
+        {%- if product.available -%}
+          {{ form | payment_button }}
+        {%- endif -%}
+      </div>
     {%- endform -%}
+
+    <div class="product-detail__trust">
+      <div class="value-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
+        <div><strong>{{ 'sections.value_props.delivery_title' | t }}</strong><span>{{ 'sections.value_props.delivery_text' | t }}</span></div>
+      </div>
+      <div class="value-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path stroke-linecap="round" stroke-linejoin="round" d="M18 3v4h-4M6 21v-4h4"/></svg>
+        <div><strong>{{ 'sections.value_props.returns_title' | t }}</strong><span>{{ 'sections.value_props.returns_text' | t }}</span></div>
+      </div>
+    </div>
 
     {%- if product.description != blank -%}
       <div class="product-detail__description">
@@ -72,6 +111,13 @@
       </div>
     {%- endif -%}
   </div>
+</div>
+
+<div class="zoom-overlay" data-zoom-overlay>
+  <button type="button" class="zoom-overlay__close" aria-label="{{ 'general.header.close_menu' | t }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+  <img data-zoom-image alt="{{ product.title }}">
 </div>
 
 {% schema %}

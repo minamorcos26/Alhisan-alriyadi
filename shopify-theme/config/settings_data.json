@@ -1,7 +1,7 @@
 {
   "current": {
-    "logo": "shopify://shop_images/alhisan-alriyadi-logo-horizontal.jpg",
-    "logo_width": 170,
+    "logo": "shopify://shop_images/alhisan-alriyadi-logo-transparent.png",
+    "logo_width": 220,
     "favicon": "shopify://shop_images/alhisan-alriyadi-emblem.png",
     "color_background": "#FFFFFF",
     "color_background_alt": "#FAFAFA",
@@ -11,8 +11,8 @@
     "color_accent": "#14532D",
     "color_accent_dark": "#0F3D22",
     "color_accent_soft": "#E7F0EA",
-    "font_display": "barlow_condensed_n7",
-    "font_body": "barlow_n4",
+    "font_display": "bebas_neue_n4",
+    "font_body": "source_sans_pro_n4",
     "page_width": 1320,
     "social_instagram_link": "",
     "social_x_link": "",
