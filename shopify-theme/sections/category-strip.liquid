@@ -10,7 +10,12 @@
         {%- endif -%}
         <a href="{{ strip_url }}" class="category-strip__item" {{ block.shopify_attributes }}>
           <span class="category-strip__icon">{%- render 'icon', name: block.settings.icon -%}</span>
-          <span class="category-strip__label">{% if block.settings.label != blank %}{{ block.settings.label }}{% else %}{{ coll.title | default: 'sections.category_strip.all' | t }}{% endif %}</span>
+          <span class="category-strip__label">
+            {%- if block.settings.label != blank -%}{{ block.settings.label }}
+            {%- elsif coll.title != blank -%}{{ coll.title }}
+            {%- else -%}{{ 'sections.category_strip.all' | t }}
+            {%- endif -%}
+          </span>
         </a>
       {%- endfor -%}
     </div>
