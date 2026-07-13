@@ -110,7 +110,13 @@
       "description": "الوصف",
       "sku": "رمز المنتج",
       "added": "أُضيف",
-      "zoom": "تكبير الصورة"
+      "zoom": "تكبير الصورة",
+      "size_guide": "دليل المقاسات",
+      "size_guide_heading": "دليل المقاسات",
+      "size_guide_col_size": "المقاس",
+      "size_guide_col_chest": "الصدر (سم)",
+      "size_guide_col_waist": "الخصر (سم)",
+      "size_guide_note": "القياسات تقريبية. لأفضل مقاس، قارن مع قطعة مشابهة تملكها بالفعل."
     },
     "cart": {
       "title": "سلة التسوق",
@@ -133,6 +139,9 @@
     },
     "list_collections": {
       "heading": "جميع الفئات"
+    },
+    "category_strip": {
+      "all": "جميع الفئات"
     }
   }
 }

@@ -11,7 +11,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
 
-    {%- render 'logo' -%}
+    {%- render 'logo', css_class: 'logo--header' -%}
 
     <nav class="main-nav" aria-label="Primary">
       {%- for link in main_menu.links -%}
@@ -41,7 +41,7 @@
         {%- endform -%}
       {%- endif -%}
 
-      <a href="{{ routes.search_url }}" class="icon-btn" aria-label="{{ 'general.header.search' | t }}">
+      <a href="{{ routes.search_url }}" class="icon-btn header-actions__search-icon" aria-label="{{ 'general.header.search' | t }}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
       </a>
       <a href="{{ routes.account_url }}" class="icon-btn" aria-label="{{ 'general.header.account' | t }}">
@@ -53,6 +53,15 @@
           <span class="cart-count">{{ cart.item_count }}</span>
         {%- endif -%}
       </a>
+    </div>
+  </div>
+
+  <div class="site-header__search-row">
+    <div class="container">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="header-search">
+        <svg class="header-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+        <input type="search" name="q" class="header-search__input" placeholder="{{ 'general.search.placeholder' | t }}" value="{{ search.terms | escape }}" aria-label="{{ 'general.header.search' | t }}">
+      </form>
     </div>
   </div>
 
@@ -80,27 +89,29 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </div>
-  {%- for link in main_menu.links -%}
-    {%- if link.links.size > 0 -%}
-      <div class="drawer-group" data-accordion-group>
-        <div class="drawer-group__row">
-          <a href="{{ link.url }}" class="drawer-group__title-link">{{ link.title }}</a>
-          <button type="button" class="drawer-group__chevron-btn" data-accordion-toggle aria-expanded="false" aria-label="{{ link.title }}">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="drawer-group__chevron"><path stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg>
-          </button>
+  <div class="drawer-nav">
+    {%- for link in main_menu.links -%}
+      {%- if link.links.size > 0 -%}
+        <div class="drawer-group" data-accordion-group>
+          <div class="drawer-group__row">
+            <a href="{{ link.url }}" class="drawer-group__title-link">{{ link.title }}</a>
+            <button type="button" class="drawer-group__chevron-btn" data-accordion-toggle aria-expanded="false" aria-label="{{ link.title }}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="drawer-group__chevron"><path stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg>
+            </button>
+          </div>
+          <ul class="drawer-group__children">
+            {%- for child in link.links -%}
+              <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+            {%- endfor -%}
+          </ul>
         </div>
-        <ul class="drawer-group__children">
-          {%- for child in link.links -%}
-            <li><a href="{{ child.url }}">{{ child.title }}</a></li>
-          {%- endfor -%}
-        </ul>
-      </div>
-    {%- else -%}
-      <div class="drawer-group drawer-group--flat">
-        <a href="{{ link.url }}" class="drawer-group__title-link">{{ link.title }}</a>
-      </div>
-    {%- endif -%}
-  {%- endfor -%}
+      {%- else -%}
+        <div class="drawer-group drawer-group--flat">
+          <a href="{{ link.url }}" class="drawer-group__title-link">{{ link.title }}</a>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
 
   {%- if localization.available_languages.size > 1 -%}
     {%- form 'localization', id: 'lang-form-mobile', class: 'lang-toggle lang-toggle--drawer' -%}

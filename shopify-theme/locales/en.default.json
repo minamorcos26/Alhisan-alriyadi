@@ -110,7 +110,13 @@
       "description": "Description",
       "sku": "SKU",
       "added": "Added",
-      "zoom": "Zoom image"
+      "zoom": "Zoom image",
+      "size_guide": "Size Guide",
+      "size_guide_heading": "Size Guide",
+      "size_guide_col_size": "Size",
+      "size_guide_col_chest": "Chest (cm)",
+      "size_guide_col_waist": "Waist (cm)",
+      "size_guide_note": "Measurements are approximate. For the best fit, compare with a similar item you already own."
     },
     "cart": {
       "title": "Your Cart",
@@ -133,6 +139,9 @@
     },
     "list_collections": {
       "heading": "All Categories"
+    },
+    "category_strip": {
+      "all": "All Categories"
     }
   }
 }

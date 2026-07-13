@@ -10,7 +10,8 @@
   </div>
 </div>
 
-<div class="container product-detail">
+<div class="container product-detail" data-product-root>
+  <script type="application/json" data-product-json>{{ product | json | replace: '</script>', '<\/script>' }}</script>
   <div class="product-detail__media">
     <div class="product-detail__main-image">
       {%- if product.compare_at_price > product.price -%}
@@ -21,11 +22,15 @@
       {%- endunless -%}
 
       {%- if product.featured_image -%}
+        {%- liquid
+          assign featured_alt = product.featured_image.alt | default: product.title
+          assign zoom_src = product.featured_image | image_url: width: 2000
+        -%}
         {{ product.featured_image | image_url: width: 1200 | image_tag:
           widths: '600,900,1200',
-          alt: product.featured_image.alt | default: product.title,
+          alt: featured_alt,
           loading: 'eager',
-          data-zoom-src: product.featured_image | image_url: width: 2000
+          data-zoom-src: zoom_src
         }}
       {%- else -%}
         {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
@@ -60,13 +65,56 @@
     {%- form 'product', product, class: 'product-detail__form' -%}
       {%- unless product.has_only_default_variant -%}
         {%- for option in product.options_with_values -%}
+          {%- assign option_name_down = option.name | downcase -%}
+          {%- assign is_color = false -%}
+          {%- assign is_size = false -%}
+          {%- if option_name_down == 'color' or option_name_down == 'colour' or option.name == 'اللون' -%}
+            {%- assign is_color = true -%}
+          {%- elsif option_name_down == 'size' or option.name == 'المقاس' or option.name == 'القياس' -%}
+            {%- assign is_size = true -%}
+          {%- endif -%}
+
           <div class="product-option">
-            <label class="product-option__label">{{ option.name }}</label>
-            <select name="options[{{ option.name | escape }}]" class="select">
-              {%- for value in option.values -%}
-                <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
-              {%- endfor -%}
-            </select>
+            <div class="product-option__head">
+              <label class="product-option__label">
+                {{ option.name }}{% if is_color %}: <span data-selected-label>{{ option.selected_value }}</span>{% endif %}
+              </label>
+              {%- if is_size -%}
+                <button type="button" class="size-guide-trigger" data-size-guide-trigger>{{ 'sections.product.size_guide' | t }}</button>
+              {%- endif -%}
+            </div>
+
+            {%- if is_color -%}
+              <div class="product-option__swatches">
+                {%- for value in option.values -%}
+                  <button type="button"
+                    class="swatch{% if option.selected_value == value %} is-selected{% endif %}"
+                    data-option-name="{{ option.name | escape }}"
+                    data-value="{{ value | escape }}"
+                    aria-label="{{ value }}"
+                    title="{{ value }}">
+                    <span class="swatch__fill" style="background: {% render 'swatch-color', value: value %};"></span>
+                  </button>
+                {%- endfor -%}
+              </div>
+            {%- elsif is_size -%}
+              <div class="product-option__chips">
+                {%- for value in option.values -%}
+                  <button type="button"
+                    class="chip-option{% if option.selected_value == value %} is-selected{% endif %}"
+                    data-option-name="{{ option.name | escape }}"
+                    data-value="{{ value | escape }}">
+                    {{ value }}
+                  </button>
+                {%- endfor -%}
+              </div>
+            {%- else -%}
+              <select name="options[{{ option.name | escape }}]" class="select">
+                {%- for value in option.values -%}
+                  <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
+                {%- endfor -%}
+              </select>
+            {%- endif -%}
           </div>
         {%- endfor -%}
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant-id>
@@ -84,7 +132,10 @@
       </div>
 
       <div class="product-detail__actions">
-        <button type="submit" class="btn btn-primary btn-block" {% unless product.available %}disabled{% endunless %}>
+        <button type="submit" class="btn btn-primary btn-block" data-add-to-cart
+          data-label-available="{{ 'sections.product.add_to_cart' | t }}"
+          data-label-unavailable="{{ 'sections.product.sold_out' | t }}"
+          {% unless product.available %}disabled{% endunless %}>
           {%- if product.available -%}{{ 'sections.product.add_to_cart' | t }}{%- else -%}{{ 'sections.product.sold_out' | t }}{%- endif -%}
         </button>
         {%- if product.available -%}
@@ -118,6 +169,33 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></svg>
   </button>
   <img data-zoom-image alt="{{ product.title }}">
+</div>
+
+<div class="size-guide-overlay" data-size-guide-overlay>
+  <div class="size-guide-modal">
+    <button type="button" class="size-guide-modal__close" data-size-guide-close aria-label="{{ 'general.header.close_menu' | t }}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <h3>{{ 'sections.product.size_guide_heading' | t }}</h3>
+    <table class="size-guide-table">
+      <thead>
+        <tr>
+          <th>{{ 'sections.product.size_guide_col_size' | t }}</th>
+          <th>{{ 'sections.product.size_guide_col_chest' | t }}</th>
+          <th>{{ 'sections.product.size_guide_col_waist' | t }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>XS</td><td>82&ndash;86</td><td>66&ndash;70</td></tr>
+        <tr><td>S</td><td>87&ndash;91</td><td>71&ndash;75</td></tr>
+        <tr><td>M</td><td>92&ndash;97</td><td>76&ndash;81</td></tr>
+        <tr><td>L</td><td>98&ndash;104</td><td>82&ndash;89</td></tr>
+        <tr><td>XL</td><td>105&ndash;111</td><td>90&ndash;97</td></tr>
+        <tr><td>XXL</td><td>112&ndash;118</td><td>98&ndash;105</td></tr>
+      </tbody>
+    </table>
+    <p class="size-guide-modal__note">{{ 'sections.product.size_guide_note' | t }}</p>
+  </div>
 </div>
 
 {% schema %}

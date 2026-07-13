@@ -1,0 +1,72 @@
+<div class="category-strip">
+  <div class="container category-strip__container">
+    <div class="category-strip__track">
+      {%- for block in section.blocks -%}
+        {%- assign coll = block.settings.collection -%}
+        {%- if block.settings.icon == 'all' -%}
+          {%- assign strip_url = routes.all_products_collection_url -%}
+        {%- else -%}
+          {%- assign strip_url = coll.url | default: routes.all_products_collection_url -%}
+        {%- endif -%}
+        <a href="{{ strip_url }}" class="category-strip__item" {{ block.shopify_attributes }}>
+          <span class="category-strip__icon">{%- render 'icon', name: block.settings.icon -%}</span>
+          <span class="category-strip__label">{% if block.settings.label != blank %}{{ block.settings.label }}{% else %}{{ coll.title | default: 'sections.category_strip.all' | t }}{% endif %}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Category strip",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Category",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "label", "label": "Custom label", "info": "Leave blank to use the collection title." },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "all", "label": "All" },
+            { "value": "sale", "label": "Sale" },
+            { "value": "men", "label": "Men" },
+            { "value": "women", "label": "Women" },
+            { "value": "kids", "label": "Kids" },
+            { "value": "football", "label": "Football" },
+            { "value": "water", "label": "Water sports" },
+            { "value": "beach", "label": "Beach" },
+            { "value": "gym", "label": "Gym" },
+            { "value": "racket", "label": "Racket sports" },
+            { "value": "shoes", "label": "Shoes" }
+          ],
+          "default": "all"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Category strip",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "all" } },
+        { "type": "item", "settings": { "icon": "sale" } },
+        { "type": "item", "settings": { "icon": "men" } },
+        { "type": "item", "settings": { "icon": "women" } },
+        { "type": "item", "settings": { "icon": "kids" } },
+        { "type": "item", "settings": { "icon": "football" } },
+        { "type": "item", "settings": { "icon": "water" } },
+        { "type": "item", "settings": { "icon": "beach" } },
+        { "type": "item", "settings": { "icon": "gym" } },
+        { "type": "item", "settings": { "icon": "racket" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

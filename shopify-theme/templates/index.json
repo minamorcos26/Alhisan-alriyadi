@@ -1,13 +1,32 @@
 {
   "sections": {
-    "hero": {
-      "type": "hero",
+    "category-strip": {
+      "type": "category-strip",
       "blocks": {
-        "image-1": { "type": "image", "settings": { "link": "/collections/gym-equipment" } },
-        "image-2": { "type": "image", "settings": { "link": "/collections/football-equipment" } },
-        "image-3": { "type": "image", "settings": { "link": "/collections/water-sports" } }
+        "item-1": { "type": "item", "settings": { "icon": "all" } },
+        "item-2": { "type": "item", "settings": { "icon": "sale", "collection": "sale" } },
+        "item-3": { "type": "item", "settings": { "icon": "men", "collection": "men" } },
+        "item-4": { "type": "item", "settings": { "icon": "women", "collection": "women" } },
+        "item-5": { "type": "item", "settings": { "icon": "kids", "collection": "kids" } },
+        "item-6": { "type": "item", "settings": { "icon": "football", "collection": "football-equipment" } },
+        "item-7": { "type": "item", "settings": { "icon": "water", "collection": "water-sports" } },
+        "item-8": { "type": "item", "settings": { "icon": "beach", "collection": "beach-equipment" } },
+        "item-9": { "type": "item", "settings": { "icon": "gym", "collection": "gym-equipment" } },
+        "item-10": { "type": "item", "settings": { "icon": "racket", "collection": "racket-equipment" } },
+        "item-11": { "type": "item", "settings": { "icon": "shoes", "collection": "running-shoes" } }
       },
-      "block_order": ["image-1", "image-2", "image-3"],
+      "block_order": ["item-1", "item-2", "item-3", "item-4", "item-5", "item-6", "item-7", "item-8", "item-9", "item-10", "item-11"],
+      "settings": {}
+    },
+    "hero-slider": {
+      "type": "hero-slider",
+      "blocks": {
+        "slide-1": { "type": "slide", "settings": { "collection": "football-equipment", "heading": "Football Season Is Here", "cta_label": "Shop Football" } },
+        "slide-2": { "type": "slide", "settings": { "collection": "water-sports", "heading": "Dive Into Water Sports", "cta_label": "Shop Water Sports" } },
+        "slide-3": { "type": "slide", "settings": { "collection": "gym-equipment", "heading": "Build Your Home Gym", "cta_label": "Shop Gym Equipment" } },
+        "slide-4": { "type": "slide", "settings": { "collection": "women", "heading": "New Women's Arrivals", "cta_label": "Shop Women" } }
+      },
+      "block_order": ["slide-1", "slide-2", "slide-3", "slide-4"],
       "settings": {}
     },
     "value-props": {
@@ -44,5 +63,5 @@
       }
     }
   },
-  "order": ["hero", "value-props", "category-tiles", "department-tiles", "featured-collection"]
+  "order": ["category-strip", "hero-slider", "value-props", "category-tiles", "department-tiles", "featured-collection"]
 }
