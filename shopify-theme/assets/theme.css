@@ -142,8 +142,11 @@ html[lang="ar"] .logo { font-family: var(--font-ar); text-transform: none; font-
 .logo--header { flex-shrink: 0; }
 @media (max-width: 640px) {
   .site-header__top { gap: var(--space-2); }
-  .logo--header img { width: clamp(140px, 40vw, 185px) !important; }
+  .logo--header img { width: clamp(120px, 34vw, 170px) !important; }
   .header-actions { gap: var(--space-1); }
+  /* Already reachable from the mobile drawer — showing it again in the compact top row
+     was the main cause of the row overflowing and pushing the cart icon past the edge. */
+  .lang-toggle--header { display: none; }
 }
 
 .main-nav { display: none; }

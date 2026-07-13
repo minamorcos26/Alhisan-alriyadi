@@ -32,7 +32,7 @@
 
     <div class="header-actions">
       {%- if localization.available_languages.size > 1 -%}
-        {%- form 'localization', id: 'lang-form-desktop', class: 'lang-toggle' -%}
+        {%- form 'localization', id: 'lang-form-desktop', class: 'lang-toggle lang-toggle--header' -%}
           {%- for language in localization.available_languages -%}
             <button type="submit" name="locale_code" value="{{ language.iso_code }}" aria-pressed="{% if language.iso_code == localization.language.iso_code %}true{% else %}false{% endif %}">
               {{ language.iso_code | upcase }}
