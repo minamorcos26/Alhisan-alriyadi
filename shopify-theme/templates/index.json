@@ -1,0 +1,48 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "blocks": {
+        "image-1": { "type": "image", "settings": { "link": "shopify://collections/gym-equipment" } },
+        "image-2": { "type": "image", "settings": { "link": "shopify://collections/football-equipment" } },
+        "image-3": { "type": "image", "settings": { "link": "shopify://collections/water-sports" } }
+      },
+      "block_order": ["image-1", "image-2", "image-3"],
+      "settings": {}
+    },
+    "value-props": {
+      "type": "value-props",
+      "settings": {}
+    },
+    "category-tiles": {
+      "type": "category-tiles",
+      "blocks": {
+        "tile-1": { "type": "tile", "settings": { "collection": "football-equipment" } },
+        "tile-2": { "type": "tile", "settings": { "collection": "gym-equipment" } },
+        "tile-3": { "type": "tile", "settings": { "collection": "water-sports" } },
+        "tile-4": { "type": "tile", "settings": { "collection": "bags-backpacks" } },
+        "tile-5": { "type": "tile", "settings": { "collection": "ping-pong-equipment" } }
+      },
+      "block_order": ["tile-1", "tile-2", "tile-3", "tile-4", "tile-5"],
+      "settings": {}
+    },
+    "department-tiles": {
+      "type": "department-tiles",
+      "blocks": {
+        "tile-1": { "type": "tile", "settings": { "collection": "women" } },
+        "tile-2": { "type": "tile", "settings": { "collection": "men" } },
+        "tile-3": { "type": "tile", "settings": { "collection": "kids" } }
+      },
+      "block_order": ["tile-1", "tile-2", "tile-3"],
+      "settings": {}
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "gym-equipment",
+        "product_count": 8
+      }
+    }
+  },
+  "order": ["hero", "value-props", "category-tiles", "department-tiles", "featured-collection"]
+}

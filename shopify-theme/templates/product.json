@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main-product": {
+      "type": "main-product",
+      "settings": {}
+    },
+    "related-products": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "gym-equipment",
+        "product_count": 4
+      }
+    }
+  },
+  "order": ["main-product", "related-products"]
+}

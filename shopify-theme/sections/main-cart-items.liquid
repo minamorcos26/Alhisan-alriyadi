@@ -1,0 +1,66 @@
+<div class="container cart-page">
+  <h1>{{ 'sections.cart.title' | t }}</h1>
+
+  {%- if cart.item_count > 0 -%}
+    {%- form 'cart', cart, class: 'cart-form' -%}
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th>{{ 'sections.cart.product' | t }}</th>
+            <th>{{ 'sections.cart.price' | t }}</th>
+            <th>{{ 'sections.cart.quantity' | t }}</th>
+            <th>{{ 'sections.cart.total' | t }}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for item in cart.items -%}
+            <tr>
+              <td class="cart-table__product">
+                <a href="{{ item.url }}" class="cart-table__media">
+                  {%- if item.image -%}
+                    {{ item.image | image_url: width: 160 | image_tag: alt: item.title, loading: 'lazy' }}
+                  {%- endif -%}
+                </a>
+                <div>
+                  <a href="{{ item.url }}" class="cart-table__title">{{ item.product.title }}</a>
+                  {%- unless item.variant.title == 'Default Title' -%}
+                    <div class="cart-table__variant">{{ item.variant.title }}</div>
+                  {%- endunless -%}
+                </div>
+              </td>
+              <td>{{ item.original_price | money_without_trailing_zeros }}</td>
+              <td>
+                <input type="number" name="updates[{{ forloop.index0 }}]" value="{{ item.quantity }}" min="0" class="select" style="width:80px">
+              </td>
+              <td>{{ item.original_line_price | money_without_trailing_zeros }}</td>
+              <td>
+                <a href="{{ item.url_to_remove }}" class="cart-table__remove">{{ 'sections.cart.remove' | t }}</a>
+              </td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+      <div class="cart-summary">
+        <button type="submit" name="update" class="btn btn-ghost">{{ 'sections.cart.update' | t }}</button>
+        <div class="cart-summary__totals">
+          <span>{{ 'sections.cart.subtotal' | t }}</span>
+          <strong>{{ cart.total_price | money_without_trailing_zeros }}</strong>
+        </div>
+        <button type="submit" name="checkout" class="btn btn-primary btn-block">{{ 'sections.cart.checkout' | t }}</button>
+      </div>
+    {%- endform -%}
+  {%- else -%}
+    <div class="empty-collection">
+      <p>{{ 'sections.cart.empty' | t }}</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">{{ 'sections.cart.continue_shopping' | t }}</a>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Cart items",
+  "settings": []
+}
+{% endschema %}

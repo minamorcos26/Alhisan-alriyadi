@@ -1,0 +1,20 @@
+{
+  "current": {
+    "color_background": "#FFFFFF",
+    "color_background_alt": "#FAFAFA",
+    "color_ink": "#171717",
+    "color_ink_soft": "#404040",
+    "color_border": "#E5E5E5",
+    "color_accent": "#14532D",
+    "color_accent_dark": "#0F3D22",
+    "color_accent_soft": "#E7F0EA",
+    "font_display": "barlow_condensed_n7",
+    "font_body": "barlow_n4",
+    "page_width": 1320,
+    "social_instagram_link": "",
+    "social_x_link": "",
+    "social_tiktok_link": "",
+    "social_snapchat_link": "",
+    "cart_type": "page"
+  }
+}

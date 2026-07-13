@@ -1,0 +1,23 @@
+<div class="container category-header">
+  <h1>{{ 'sections.list_collections.heading' | t }}</h1>
+</div>
+<div class="container">
+  <div class="category-grid">
+    {%- for coll in collections -%}
+      {%- unless coll.handle == 'frontpage' -%}
+        <a href="{{ coll.url }}" class="category-tile">
+          {%- assign tile_image = coll.image | default: coll.products.first.featured_image -%}
+          {%- if tile_image -%}
+            {{ tile_image | image_url: width: 400 | image_tag: loading: 'lazy', widths: '200,300,400', alt: coll.title }}
+          {%- endif -%}
+          <span class="category-tile__name">{{ coll.title }}</span>
+          <span class="category-tile__count">{{ coll.all_products_count }} {{ 'sections.main_collection.product_count' | t }}</span>
+        </a>
+      {%- endunless -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{ "name": "All collections", "settings": [] }
+{% endschema %}

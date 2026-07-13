@@ -1,0 +1,147 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Alhisan Alriyadi",
+    "theme_version": "1.0.0",
+    "theme_author": "Alhisan Alriyadi",
+    "theme_documentation_url": "",
+    "theme_support_url": ""
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_background_alt",
+        "label": "Background (alt sections)",
+        "default": "#FAFAFA"
+      },
+      {
+        "type": "color",
+        "id": "color_ink",
+        "label": "Heading text",
+        "default": "#171717"
+      },
+      {
+        "type": "color",
+        "id": "color_ink_soft",
+        "label": "Body text",
+        "default": "#404040"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border",
+        "default": "#E5E5E5"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent (buttons, links, highlights)",
+        "default": "#14532D"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_dark",
+        "label": "Accent hover",
+        "default": "#0F3D22"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_soft",
+        "label": "Accent soft background",
+        "default": "#E7F0EA"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Latin (English)"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_display",
+        "label": "Display / heading font",
+        "default": "barlow_condensed_n7"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body font",
+        "default": "barlow_n4"
+      },
+      {
+        "type": "paragraph",
+        "content": "Arabic text uses Tajawal, loaded automatically from Google Fonts. Shopify's font picker library does not reliably cover Arabic-script fonts."
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "label": "Page width",
+        "min": 1000,
+        "max": 1600,
+        "step": 20,
+        "unit": "px",
+        "default": 1320
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "social_x_link",
+        "label": "X (Twitter)",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok_link",
+        "label": "TikTok",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat_link",
+        "label": "Snapchat",
+        "default": ""
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart behavior",
+        "options": [
+          { "value": "page", "label": "Cart page" },
+          { "value": "drawer", "label": "Cart drawer" }
+        ],
+        "default": "page"
+      }
+    ]
+  }
+]

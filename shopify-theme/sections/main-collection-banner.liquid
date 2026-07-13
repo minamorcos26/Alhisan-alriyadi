@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg>
+    <span class="current">{{ collection.title }}</span>
+  </div>
+</div>
+
+<div class="container category-header">
+  <h1>{{ collection.title }}</h1>
+  {%- if collection.description != blank -%}
+    <div class="category-header__desc">{{ collection.description }}</div>
+  {%- endif -%}
+  <div class="category-header__meta">
+    <span><strong>{{ collection.all_products_count }}</strong> {{ 'sections.main_collection.product_count' | t }}</span>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection banner",
+  "settings": []
+}
+{% endschema %}

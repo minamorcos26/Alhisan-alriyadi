@@ -1,0 +1,127 @@
+{% liquid
+  assign main_menu = linklists[section.settings.menu]
+  assign dept_titles = 'Men,Women,Kids,Sale' | split: ','
+%}
+
+<div class="drawer-overlay" data-overlay></div>
+
+<header class="site-header">
+  <div class="container site-header__top">
+    <button class="icon-btn menu-toggle" data-drawer-open aria-expanded="false" aria-label="{{ 'general.header.menu' | t }}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+
+    <a href="{{ routes.root_url }}" class="logo">
+      {%- if section.settings.logo != blank -%}
+        <img src="{{ section.settings.logo | image_url: width: 240 }}" alt="{{ shop.name }}" width="120" loading="eager">
+      {%- else -%}
+        {{ shop.name }}
+      {%- endif -%}
+    </a>
+
+    <nav class="main-nav" aria-label="Primary">
+      {%- for link in main_menu.links -%}
+        <div class="main-nav__item{% if link.links.size > 0 %} has-dropdown{% endif %}">
+          <a href="{{ link.url }}" class="main-nav__link">{{ link.title }}</a>
+          {%- if link.links.size > 0 -%}
+            <div class="main-nav__dropdown">
+              <ul>
+                {%- for child in link.links -%}
+                  <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </nav>
+
+    <div class="header-actions">
+      {%- if localization.available_languages.size > 1 -%}
+        {%- form 'localization', id: 'lang-form-desktop', class: 'lang-toggle' -%}
+          {%- for language in localization.available_languages -%}
+            <button type="submit" name="locale_code" value="{{ language.iso_code }}" aria-pressed="{% if language.iso_code == localization.language.iso_code %}true{% else %}false{% endif %}">
+              {{ language.iso_code | upcase }}
+            </button>
+          {%- endfor -%}
+        {%- endform -%}
+      {%- endif -%}
+
+      <a href="{{ routes.search_url }}" class="icon-btn" aria-label="{{ 'general.header.search' | t }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+      </a>
+      <a href="{{ routes.account_url }}" class="icon-btn" aria-label="{{ 'general.header.account' | t }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+      </a>
+      <a href="{{ routes.cart_url }}" class="icon-btn" aria-label="{{ 'general.header.cart' | t }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
+        {%- if cart.item_count > 0 -%}
+          <span class="cart-count">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
+    </div>
+  </div>
+
+  <div class="sub-nav">
+    <div class="container sub-nav__track">
+      <span class="sub-nav__label">{{ 'general.header.shop_by' | t }}</span>
+      {%- for link in main_menu.links -%}
+        {%- if dept_titles contains link.title -%}
+          <a href="{{ link.url }}" class="sub-nav__link{% if link.title == 'Sale' %} sub-nav__link--accent{% endif %}">{{ link.title }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<nav class="mobile-drawer" aria-label="Mobile">
+  <div class="drawer-head">
+    <a href="{{ routes.root_url }}" class="logo">{{ shop.name }}</a>
+    <button class="icon-btn" data-drawer-close aria-label="{{ 'general.header.close_menu' | t }}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  {%- for link in main_menu.links -%}
+    <div class="drawer-group">
+      <a href="{{ link.url }}" class="drawer-group__title-link">{{ link.title }}</a>
+      {%- if link.links.size > 0 -%}
+        <ul>
+          {%- for child in link.links -%}
+            <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  {%- endfor -%}
+
+  {%- if localization.available_languages.size > 1 -%}
+    {%- form 'localization', id: 'lang-form-mobile', class: 'lang-toggle lang-toggle--drawer' -%}
+      {%- for language in localization.available_languages -%}
+        <button type="submit" name="locale_code" value="{{ language.iso_code }}" aria-pressed="{% if language.iso_code == localization.language.iso_code %}true{% else %}false{% endif %}">
+          {{ language.iso_code | upcase }}
+        </button>
+      {%- endfor -%}
+    {%- endform -%}
+  {%- endif -%}
+</nav>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image",
+      "info": "Leave blank to show the store name as text."
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

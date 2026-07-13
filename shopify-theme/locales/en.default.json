@@ -1,0 +1,135 @@
+{
+  "general": {
+    "announcement": {
+      "message": "Fast delivery across Saudi Arabia | Free shipping over SAR 200",
+      "close": "Close announcement"
+    },
+    "header": {
+      "menu": "Menu",
+      "search": "Search",
+      "account": "Account",
+      "cart": "Cart",
+      "close_menu": "Close menu",
+      "shop_by": "Shop by:",
+      "language": "Language"
+    },
+    "breadcrumb": {
+      "home": "Home"
+    },
+    "footer": {
+      "shop": "Shop",
+      "help": "Help",
+      "company": "Company",
+      "about": "About Us",
+      "contact": "Contact Us",
+      "rights": "All rights reserved."
+    },
+    "newsletter": {
+      "heading": "Never Miss a Drop",
+      "text": "Subscribe for new arrivals and exclusive offers.",
+      "placeholder": "Your email address",
+      "button": "Subscribe",
+      "success": "Thanks for subscribing!"
+    },
+    "search": {
+      "placeholder": "Search products...",
+      "results_for": "Search results for \"{{ terms }}\"",
+      "no_results": "No results found for \"{{ terms }}\". Try a different search.",
+      "results_count": "{{ count }} results"
+    },
+    "pagination": {
+      "next": "Next",
+      "previous": "Previous"
+    },
+    "a11y": {
+      "skip_to_content": "Skip to content"
+    },
+    "password_page": {
+      "password": "Password",
+      "enter": "Enter"
+    }
+  },
+  "sections": {
+    "hero": {
+      "eyebrow": "New Season Collection",
+      "heading": "Gear Up For Better Performance",
+      "text": "Authentic sporting goods for every game — from football to the gym to water sports. Quality you can trust, with fast delivery across the Kingdom.",
+      "cta_primary": "Shop Now",
+      "cta_secondary": "Football",
+      "stat_categories": "product categories",
+      "stat_products": "authentic products",
+      "stat_delivery_value": "24h",
+      "stat_delivery": "fast dispatch"
+    },
+    "value_props": {
+      "delivery_title": "Fast Delivery",
+      "delivery_text": "Across Saudi Arabia",
+      "authentic_title": "Authentic Products",
+      "authentic_text": "Guaranteed quality",
+      "returns_title": "Easy Returns",
+      "returns_text": "Within 14 days",
+      "secure_title": "Secure Checkout",
+      "secure_text": "Mada, Visa, Apple Pay"
+    },
+    "category_tiles": {
+      "heading": "Shop by Category",
+      "text": "Explore our full range of sporting goods."
+    },
+    "department_tiles": {
+      "heading": "Shop by Department"
+    },
+    "featured_collection": {
+      "view_all": "View all"
+    },
+    "main_collection": {
+      "filter": "Filter",
+      "filters_title": "Filters",
+      "sort_by": "Sort by",
+      "sort_best_selling": "Best selling",
+      "sort_newest": "Newest",
+      "sort_price_asc": "Price: Low to High",
+      "sort_price_desc": "Price: High to Low",
+      "results": "results",
+      "product_count": "products",
+      "in_stock": "In stock",
+      "on_sale": "On sale",
+      "price": "Price",
+      "min": "Min",
+      "max": "Max",
+      "reset": "Reset",
+      "show_results": "Show Results",
+      "clear_filter": "Remove filter",
+      "no_products": "No products found in this collection.",
+      "empty_state_text": "Try browsing our other categories."
+    },
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out",
+      "unavailable": "Unavailable",
+      "quantity": "Quantity",
+      "description": "Description",
+      "sku": "SKU"
+    },
+    "cart": {
+      "title": "Your Cart",
+      "empty": "Your cart is empty",
+      "continue_shopping": "Continue Shopping",
+      "checkout": "Checkout",
+      "subtotal": "Subtotal",
+      "remove": "Remove",
+      "product": "Product",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "update": "Update Cart"
+    },
+    "404": {
+      "heading": "Page Not Found",
+      "text": "The page you're looking for doesn't exist.",
+      "button": "Back to Home"
+    },
+    "list_collections": {
+      "heading": "All Categories"
+    }
+  }
+}

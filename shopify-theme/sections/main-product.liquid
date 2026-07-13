@@ -1,0 +1,82 @@
+<div class="container">
+  <div class="breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+    {%- if product.collections.first -%}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg>
+      <a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+    {%- endif -%}
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg>
+    <span class="current">{{ product.title }}</span>
+  </div>
+</div>
+
+<div class="container product-detail">
+  <div class="product-detail__media">
+    {%- if product.featured_image -%}
+      {{ product.featured_image | image_url: width: 900 | image_tag: widths: '450,700,900', alt: product.featured_image.alt | default: product.title, loading: 'eager' }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+    {%- if product.images.size > 1 -%}
+      <div class="product-detail__thumbs">
+        {%- for image in product.images limit: 6 -%}
+          <button type="button" class="product-detail__thumb" data-thumb data-src="{{ image | image_url: width: 900 }}">
+            {{ image | image_url: width: 140 | image_tag: loading: 'lazy', alt: image.alt }}
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="product-detail__info">
+    {%- if product.type != blank -%}<span class="product-card__type">{{ product.type }}</span>{%- endif -%}
+    <h1>{{ product.title }}</h1>
+    <div class="product-detail__price">
+      {%- if product.compare_at_price > product.price -%}
+        <s class="product-card__compare">{{ product.compare_at_price | money_without_trailing_zeros }}</s>
+      {%- endif -%}
+      <span>{{ product.price | money_without_trailing_zeros }}</span>
+    </div>
+
+    {%- form 'product', product, class: 'product-detail__form' -%}
+      {%- unless product.has_only_default_variant -%}
+        {%- for option in product.options_with_values -%}
+          <div class="product-option">
+            <label class="product-option__label">{{ option.name }}</label>
+            <select name="options[{{ option.name | escape }}]" class="select">
+              {%- for value in option.values -%}
+                <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
+              {%- endfor -%}
+            </select>
+          </div>
+        {%- endfor -%}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant-id>
+      {%- else -%}
+        <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+      {%- endunless -%}
+
+      <div class="product-option">
+        <label class="product-option__label" for="Quantity">{{ 'sections.product.quantity' | t }}</label>
+        <input type="number" id="Quantity" name="quantity" value="1" min="1" class="select" style="width:90px">
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" {% unless product.available %}disabled{% endunless %}>
+        {%- if product.available -%}{{ 'sections.product.add_to_cart' | t }}{%- else -%}{{ 'sections.product.sold_out' | t }}{%- endif -%}
+      </button>
+    {%- endform -%}
+
+    {%- if product.description != blank -%}
+      <div class="product-detail__description">
+        <h2>{{ 'sections.product.description' | t }}</h2>
+        {{ product.description }}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product information",
+  "settings": []
+}
+{% endschema %}

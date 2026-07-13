@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}" dir="{% if request.locale.iso_code == 'ar' %}rtl{% else %}ltr{% endif %}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  <title>
+    {{ page_title }}
+    {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
+    {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  </title>
+
+  {{ content_for_header }}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
+
+  {{ settings.font_display | font_face: font_display: 'swap' }}
+  {{ settings.font_body | font_face: font_display: 'swap' }}
+
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+  <style>
+    :root {
+      --color-background: {{ settings.color_background }};
+      --color-background-alt: {{ settings.color_background_alt }};
+      --color-ink: {{ settings.color_ink }};
+      --color-ink-soft: {{ settings.color_ink_soft }};
+      --color-border: {{ settings.color_border }};
+      --color-accent: {{ settings.color_accent }};
+      --color-accent-dark: {{ settings.color_accent_dark }};
+      --color-accent-soft: {{ settings.color_accent_soft }};
+      --font-display: {{ settings.font_display.family }}, sans-serif;
+      --font-body: {{ settings.font_body.family }}, sans-serif;
+      --container-max: {{ settings.page_width }}px;
+    }
+  </style>
+
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+</head>
+<body class="template-{{ template.name | handleize }}">
+  <a href="#main" class="skip-link">{{ 'general.a11y.skip_to_content' | t }}</a>
+
+  {% section 'announcement-bar' %}
+  {% section 'header' %}
+
+  <main id="main">
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'newsletter' %}
+  {% section 'footer' %}
+</body>
+</html>
