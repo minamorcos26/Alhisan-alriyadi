@@ -69,29 +69,18 @@
 
       {%- paginate collection.products by 24 -%}
         {%- if collection.products.size > 0 -%}
-          <div class="product-grid">
-            {%- for product in collection.products -%}
-              {%- render 'product-card', product: product -%}
-            {%- endfor -%}
-          </div>
-
-          {%- if paginate.pages > 1 -%}
-            <nav class="pagination" aria-label="Pagination">
-              {%- if paginate.previous -%}
-                <a href="{{ paginate.previous.url }}">{{ 'general.pagination.previous' | t }}</a>
-              {%- endif -%}
-              {%- for part in paginate.parts -%}
-                {%- if part.is_link -%}
-                  <a href="{{ part.url }}">{{ part.title }}</a>
-                {%- else -%}
-                  <span class="{% if part.title == paginate.current_page %}is-current{% endif %}">{{ part.title }}</span>
-                {%- endif -%}
+          <div data-infinite-scroll data-next-url="{% if paginate.next %}{{ paginate.next.url }}{% endif %}">
+            <div class="product-grid" data-infinite-grid>
+              {%- for product in collection.products -%}
+                {%- render 'product-card', product: product -%}
               {%- endfor -%}
-              {%- if paginate.next -%}
-                <a href="{{ paginate.next.url }}">{{ 'general.pagination.next' | t }}</a>
-              {%- endif -%}
-            </nav>
-          {%- endif -%}
+            </div>
+            {%- if paginate.next -%}
+              <div class="infinite-sentinel" data-infinite-sentinel>
+                <span class="infinite-sentinel__spinner" aria-hidden="true"></span>
+              </div>
+            {%- endif -%}
+          </div>
         {%- else -%}
           <div class="empty-collection">
             <p>{{ 'sections.main_collection.no_products' | t }}</p>

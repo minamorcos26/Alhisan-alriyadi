@@ -40,9 +40,10 @@
         "tile-2": { "type": "tile", "settings": { "collection": "gym-equipment" } },
         "tile-3": { "type": "tile", "settings": { "collection": "water-sports" } },
         "tile-4": { "type": "tile", "settings": { "collection": "bags-backpacks" } },
-        "tile-5": { "type": "tile", "settings": { "collection": "ping-pong-equipment" } }
+        "tile-5": { "type": "tile", "settings": { "collection": "ping-pong-equipment" } },
+        "tile-6": { "type": "all", "settings": {} }
       },
-      "block_order": ["tile-1", "tile-2", "tile-3", "tile-4", "tile-5"],
+      "block_order": ["tile-1", "tile-2", "tile-3", "tile-4", "tile-5", "tile-6"],
       "settings": {}
     },
     "department-tiles": {

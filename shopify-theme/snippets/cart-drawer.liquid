@@ -1,0 +1,29 @@
+{%- comment -%}
+  Slide-out cart drawer. Content is rendered client-side from /cart.js so it can
+  update instantly on add/remove without a page reload. Liquid only supplies the
+  static shell and translated strings (as data attributes) for theme.js to read.
+{%- endcomment -%}
+<div class="drawer-overlay" data-cart-drawer-overlay></div>
+<aside class="cart-drawer" data-cart-drawer aria-hidden="true"
+  data-str-empty="{{ 'sections.cart.empty' | t }}"
+  data-str-continue="{{ 'sections.cart.continue_shopping' | t }}"
+  data-str-remove="{{ 'sections.cart.remove' | t }}"
+  data-str-checkout="{{ 'sections.cart.checkout' | t }}"
+  data-str-view-cart="{{ 'sections.cart.view_cart' | t }}"
+  data-str-subtotal-excl="{{ 'sections.cart.subtotal_excl_tax' | t }}"
+  data-str-vat="{{ 'sections.cart.vat' | t }}"
+  data-str-total="{{ 'sections.cart.total' | t }}"
+  data-str-coupon-placeholder="{{ 'sections.cart.coupon_placeholder' | t }}"
+  data-str-apply="{{ 'sections.cart.apply' | t }}"
+  data-str-each="{{ 'sections.cart.each' | t }}"
+  data-all-products-url="{{ routes.all_products_collection_url }}"
+  data-cart-url="{{ routes.cart_url }}">
+  <div class="cart-drawer__head">
+    <h2>{{ 'sections.cart.title' | t }}</h2>
+    <button type="button" class="icon-btn" data-cart-drawer-close aria-label="{{ 'general.header.close_menu' | t }}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="cart-drawer__body" data-cart-drawer-body></div>
+  <div class="cart-drawer__foot" data-cart-drawer-foot></div>
+</aside>

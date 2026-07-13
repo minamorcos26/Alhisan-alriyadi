@@ -37,13 +37,43 @@
         {%- endfor -%}
       </ul>
 
+      {%- liquid
+        assign subtotal_excl_cents = cart.total_price | divided_by: 1.15 | round
+        assign tax_cents = cart.total_price | minus: subtotal_excl_cents
+      -%}
       <div class="cart-summary">
-        <button type="submit" name="update" class="btn btn-ghost cart-summary__update">{{ 'sections.cart.update' | t }}</button>
-        <div class="cart-summary__totals">
-          <span>{{ 'sections.cart.subtotal' | t }}</span>
-          <strong>{{ cart.total_price | money_without_trailing_zeros }}</strong>
+        <form class="coupon-form" data-coupon-form>
+          <input type="text" name="coupon" placeholder="{{ 'sections.cart.coupon_placeholder' | t }}" class="coupon-form__input" autocomplete="off">
+          <button type="submit" class="btn btn-ghost coupon-form__btn">{{ 'sections.cart.apply' | t }}</button>
+        </form>
+
+        <div class="cart-summary__totals-block">
+          {%- if cart.cart_level_discount_applications.size > 0 -%}
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <div class="cart-summary__totals-row cart-summary__totals-row--discount">
+                <span>{{ discount.title }}</span>
+                <span>&minus;{{ discount.total_allocated_amount | money_without_trailing_zeros }}</span>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+          <div class="cart-summary__totals-row">
+            <span>{{ 'sections.cart.subtotal_excl_tax' | t }}</span>
+            <span>{{ subtotal_excl_cents | money_without_trailing_zeros }}</span>
+          </div>
+          <div class="cart-summary__totals-row">
+            <span>{{ 'sections.cart.vat' | t }}</span>
+            <span>{{ tax_cents | money_without_trailing_zeros }}</span>
+          </div>
+          <div class="cart-summary__totals-row cart-summary__totals-row--total">
+            <span>{{ 'sections.cart.total' | t }}</span>
+            <strong>{{ cart.total_price | money_without_trailing_zeros }}</strong>
+          </div>
         </div>
-        <button type="submit" name="checkout" class="btn btn-primary btn-block">{{ 'sections.cart.checkout' | t }}</button>
+
+        <div class="cart-summary__actions">
+          <button type="submit" name="update" class="btn btn-ghost cart-summary__update">{{ 'sections.cart.update' | t }}</button>
+          <button type="submit" name="checkout" class="btn btn-primary btn-block">{{ 'sections.cart.checkout' | t }}</button>
+        </div>
       </div>
     {%- endform -%}
   {%- else -%}

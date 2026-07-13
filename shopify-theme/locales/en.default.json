@@ -73,7 +73,8 @@
     },
     "category_tiles": {
       "heading": "Shop by Category",
-      "text": "Explore our full range of sporting goods."
+      "text": "Explore our full range of sporting goods.",
+      "all_categories": "All Categories"
     },
     "department_tiles": {
       "heading": "Shop by Department"
@@ -123,15 +124,20 @@
       "title": "Your Cart",
       "empty": "Your cart is empty",
       "continue_shopping": "Continue Shopping",
+      "view_cart": "View Cart",
       "checkout": "Checkout",
       "subtotal": "Subtotal",
+      "subtotal_excl_tax": "Subtotal (excl. VAT)",
+      "vat": "VAT (15%)",
       "remove": "Remove",
       "product": "Product",
       "price": "Price",
       "quantity": "Quantity",
       "total": "Total",
       "update": "Update Cart",
-      "each": "each"
+      "each": "each",
+      "coupon_placeholder": "Discount code",
+      "apply": "Apply"
     },
     "404": {
       "heading": "Page Not Found",

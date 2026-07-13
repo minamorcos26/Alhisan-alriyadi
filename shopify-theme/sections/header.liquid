@@ -47,7 +47,7 @@
       <a href="{{ routes.account_url }}" class="icon-btn" aria-label="{{ 'general.header.account' | t }}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
       </a>
-      <a href="{{ routes.cart_url }}" class="icon-btn" aria-label="{{ 'general.header.cart' | t }}">
+      <a href="{{ routes.cart_url }}" class="icon-btn" aria-label="{{ 'general.header.cart' | t }}" data-cart-drawer-open>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
         {%- if cart.item_count > 0 -%}
           <span class="cart-count">{{ cart.item_count }}</span>

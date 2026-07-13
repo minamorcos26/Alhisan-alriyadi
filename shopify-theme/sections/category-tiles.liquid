@@ -8,18 +8,30 @@
     </div>
     <div class="category-grid">
       {%- for block in section.blocks -%}
-        {%- assign coll = collections[block.settings.collection] -%}
-        {%- if coll -%}
-          <a href="{{ coll.url }}" class="category-tile" {{ block.shopify_attributes }}>
-            {%- assign tile_image = coll.image | default: coll.products.first.featured_image -%}
-            {%- if tile_image -%}
-              {{ tile_image | image_url: width: 500 | image_tag: loading: 'lazy', widths: '250,375,500', alt: coll.title }}
-            {%- endif -%}
-            <span class="category-tile__label">
-              <span class="category-tile__name">{{ block.settings.label | default: coll.title }}</span>
-              <span class="category-tile__count">{{ coll.all_products_count }} {{ 'sections.main_collection.product_count' | t }}</span>
+        {%- if block.type == 'all' -%}
+          <a href="{{ routes.collections_url | default: '/collections' }}" class="category-tile category-tile--all" {{ block.shopify_attributes }}>
+            <span class="category-tile__all-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            </span>
+            <span class="category-tile__name">{% if block.settings.label != blank %}{{ block.settings.label }}{% else %}{{ 'sections.category_tiles.all_categories' | t }}{% endif %}</span>
+            <span class="category-tile__arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg>
             </span>
           </a>
+        {%- else -%}
+          {%- assign coll = collections[block.settings.collection] -%}
+          {%- if coll -%}
+            <a href="{{ coll.url }}" class="category-tile" {{ block.shopify_attributes }}>
+              {%- assign tile_image = coll.image | default: coll.products.first.featured_image -%}
+              {%- if tile_image -%}
+                {{ tile_image | image_url: width: 500 | image_tag: loading: 'lazy', widths: '250,375,500', alt: coll.title }}
+              {%- endif -%}
+              <span class="category-tile__label">
+                <span class="category-tile__name">{{ block.settings.label | default: coll.title }}</span>
+                <span class="category-tile__count">{{ coll.all_products_count }} {{ 'sections.main_collection.product_count' | t }}</span>
+              </span>
+            </a>
+          {%- endif -%}
         {%- endif -%}
       {%- endfor -%}
     </div>
@@ -41,6 +53,13 @@
       "settings": [
         { "type": "collection", "id": "collection", "label": "Collection" },
         { "type": "text", "id": "label", "label": "Custom label", "info": "Leave blank to use the collection title." }
+      ]
+    },
+    {
+      "type": "all",
+      "name": "All categories tile",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Custom label", "info": "Leave blank to use the default label." }
       ]
     }
   ],

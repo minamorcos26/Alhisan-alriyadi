@@ -18,13 +18,22 @@
 
 {%- if search.performed and search.results_count > 0 -%}
   <div class="container">
-    <div class="product-grid">
-      {%- for item in search.results -%}
-        {%- if item.object_type == 'product' -%}
-          {%- render 'product-card', product: item -%}
+    {%- paginate search.results by 24 -%}
+      <div data-infinite-scroll data-next-url="{% if paginate.next %}{{ paginate.next.url }}{% endif %}">
+        <div class="product-grid" data-infinite-grid>
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {%- render 'product-card', product: item -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if paginate.next -%}
+          <div class="infinite-sentinel" data-infinite-sentinel>
+            <span class="infinite-sentinel__spinner" aria-hidden="true"></span>
+          </div>
         {%- endif -%}
-      {%- endfor -%}
-    </div>
+      </div>
+    {%- endpaginate -%}
   </div>
 {%- endif -%}
 

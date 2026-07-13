@@ -45,6 +45,7 @@
     }
   </style>
 
+  <script>window.themeMoneyFormat = {{ shop.money_format | json }};</script>
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
 </head>
 <body class="template-{{ template.name | handleize }}">
@@ -52,6 +53,7 @@
 
   {% section 'announcement-bar' %}
   {% section 'header' %}
+  {%- render 'cart-drawer' -%}
 
   <main id="main">
     {{ content_for_layout }}
