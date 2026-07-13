@@ -1,0 +1,128 @@
+<div class="container contact-page">
+  <div class="contact-page__head">
+    <h1>{% if section.settings.heading != blank %}{{ section.settings.heading }}{% else %}{{ 'sections.contact.heading' | t }}{% endif %}</h1>
+    <p>{% if section.settings.text != blank %}{{ section.settings.text }}{% else %}{{ 'sections.contact.text' | t }}{% endif %}</p>
+  </div>
+
+  <div class="contact-page__grid">
+    <div class="contact-channels">
+      {%- if section.settings.whatsapp_number != blank -%}
+        <a href="https://wa.me/{{ section.settings.whatsapp_number }}" class="contact-channel contact-channel--whatsapp" target="_blank" rel="noopener noreferrer">
+          <span class="contact-channel__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M4 20l1.3-4A8 8 0 1 1 9 19.6L4 20Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M8.5 9.5c0 3.5 2.5 6 6 6 .8 0 1-1.6.4-2.2l-1.4-1.2c-.3-.3-.8-.3-1.1 0l-.4.4a5 5 0 0 1-2.5-2.5l.4-.4c.3-.3.3-.8 0-1.1L8.7 7.1c-.6-.6-2.2-.4-2.2.4"/></svg>
+          </span>
+          <span class="contact-channel__body">
+            <strong>{{ 'sections.contact.whatsapp' | t }}</strong>
+            <span>{{ section.settings.whatsapp_display | default: section.settings.whatsapp_number }}</span>
+          </span>
+        </a>
+      {%- endif -%}
+
+      {%- if section.settings.address != blank -%}
+        <a href="{{ section.settings.maps_url | default: '#' }}" class="contact-channel contact-channel--location" target="_blank" rel="noopener noreferrer">
+          <span class="contact-channel__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s7-7.2 7-12a7 7 0 1 0-14 0c0 4.8 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          </span>
+          <span class="contact-channel__body">
+            <strong>{{ 'sections.contact.visit' | t }}</strong>
+            <span>{{ section.settings.address }}</span>
+          </span>
+        </a>
+      {%- endif -%}
+
+      {%- if section.settings.email != blank -%}
+        <a href="mailto:{{ section.settings.email }}" class="contact-channel contact-channel--email">
+          <span class="contact-channel__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m4 7 8 6 8-6"/></svg>
+          </span>
+          <span class="contact-channel__body">
+            <strong>{{ 'sections.contact.email' | t }}</strong>
+            <span>{{ section.settings.email }}</span>
+          </span>
+        </a>
+      {%- endif -%}
+
+      {%- assign has_social = false -%}
+      {%- if settings.social_instagram_link != blank or settings.social_x_link != blank or settings.social_tiktok_link != blank or settings.social_snapchat_link != blank or section.settings.linktree_url != blank -%}
+        {%- assign has_social = true -%}
+      {%- endif -%}
+      {%- if has_social -%}
+        <div class="contact-social">
+          <strong class="contact-social__label">{{ 'sections.contact.follow' | t }}</strong>
+          <div class="contact-social__row">
+            {%- if section.settings.linktree_url != blank -%}
+              <a href="{{ section.settings.linktree_url }}" class="contact-social__btn" aria-label="{{ 'sections.contact.follow' | t }}" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if settings.social_instagram_link != blank -%}
+              <a href="{{ settings.social_instagram_link }}" class="contact-social__btn" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if settings.social_x_link != blank -%}
+              <a href="{{ settings.social_x_link }}" class="contact-social__btn" aria-label="X" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4l16 16M20 4 4 20"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if settings.social_tiktok_link != blank -%}
+              <a href="{{ settings.social_tiktok_link }}" class="contact-social__btn" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 4v9.5a3.5 3.5 0 1 1-3-3.46M15 4a4 4 0 0 0 4 4"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if settings.social_snapchat_link != blank -%}
+              <a href="{{ settings.social_snapchat_link }}" class="contact-social__btn" aria-label="Snapchat" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.5 0 4.5 2 4.5 4.5 0 1.2 0 2.3.3 3 .3.6 1 .9 1.7 1.1.4.1.5.6.2.9-.4.4-1 .7-1.7.9 0 .4.1.8-.2 1.1-.3.3-1 .3-1.5.3-.4.7-1.2 1.7-3.3 1.7s-2.9-1-3.3-1.7c-.5 0-1.2 0-1.5-.3-.3-.3-.2-.7-.2-1.1-.7-.2-1.3-.5-1.7-.9-.3-.3-.2-.8.2-.9.7-.2 1.4-.5 1.7-1.1.3-.7.3-1.8.3-3C7.5 5 9.5 3 12 3Z"/></svg>
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- form 'contact', class: 'contact-form' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="contact-form__success">{{ 'sections.contact.form_success' | t }}</p>
+      {%- endif -%}
+      {%- if form.errors -%}
+        <p class="contact-form__error">{{ 'sections.contact.form_error' | t }}</p>
+      {%- endif -%}
+      <div class="contact-form__row">
+        <label class="visually-hidden" for="contact-name">{{ 'sections.contact.name' | t }}</label>
+        <input type="text" id="contact-name" name="contact[name]" placeholder="{{ 'sections.contact.name' | t }}" value="{{ form.name }}" required>
+      </div>
+      <div class="contact-form__row">
+        <label class="visually-hidden" for="contact-email">{{ 'sections.contact.email' | t }}</label>
+        <input type="email" id="contact-email" name="contact[email]" placeholder="{{ 'sections.contact.email' | t }}" value="{{ form.email }}" required>
+      </div>
+      <div class="contact-form__row">
+        <label class="visually-hidden" for="contact-phone">{{ 'sections.contact.phone' | t }}</label>
+        <input type="tel" id="contact-phone" name="contact[phone]" placeholder="{{ 'sections.contact.phone' | t }}" value="{{ form.phone }}">
+      </div>
+      <div class="contact-form__row">
+        <label class="visually-hidden" for="contact-message">{{ 'sections.contact.message' | t }}</label>
+        <textarea id="contact-message" name="contact[body]" rows="5" placeholder="{{ 'sections.contact.message' | t }}" required>{{ form.body }}</textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">{{ 'sections.contact.submit' | t }}</button>
+    {%- endform -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact info",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "text", "id": "whatsapp_number", "label": "WhatsApp number", "info": "Digits only with country code, e.g. 966573873497" },
+    { "type": "text", "id": "whatsapp_display", "label": "WhatsApp display text", "info": "Leave blank to show the number as-is." },
+    { "type": "text", "id": "email", "label": "Contact email" },
+    { "type": "textarea", "id": "address", "label": "Store address" },
+    { "type": "url", "id": "maps_url", "label": "Google Maps link" },
+    { "type": "url", "id": "linktree_url", "label": "Linktree / general social link" }
+  ],
+  "presets": [
+    { "name": "Contact info" }
+  ]
+}
+{% endschema %}

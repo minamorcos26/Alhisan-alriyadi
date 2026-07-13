@@ -148,6 +148,12 @@
         "type": "text",
         "id": "social_snapchat_link",
         "label": "Snapchat"
+      },
+      {
+        "type": "text",
+        "id": "social_whatsapp_number",
+        "label": "WhatsApp number",
+        "info": "Digits only with country code, e.g. 966573873497"
       }
     ]
   },

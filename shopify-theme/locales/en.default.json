@@ -149,6 +149,20 @@
     },
     "category_strip": {
       "all": "All Categories"
+    },
+    "contact": {
+      "heading": "Get in Touch",
+      "text": "We're here to help with any questions about your order, our products, or anything else.",
+      "whatsapp": "WhatsApp",
+      "visit": "Visit Our Store",
+      "email": "Email",
+      "follow": "Follow Us",
+      "name": "Name",
+      "phone": "Phone (optional)",
+      "message": "Message",
+      "submit": "Send Message",
+      "form_success": "Thanks for reaching out! We'll get back to you soon.",
+      "form_error": "Something went wrong. Please check your details and try again."
     }
   }
 }
