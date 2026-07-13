@@ -3,10 +3,10 @@
   assign policies_link = nil
   assign contact_link = nil
   for link in main_menu.links
-    if link.title == 'Policies'
+    if link.url contains '/policies'
       assign policies_link = link
     endif
-    if link.title == 'Contact'
+    if link.url contains '/pages/'
       assign contact_link = link
     endif
   endfor
@@ -16,7 +16,7 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="logo">{{ shop.name }}</div>
+        {%- render 'logo' -%}
         {%- if section.settings.description != blank -%}
           <p>{{ section.settings.description }}</p>
         {%- endif -%}

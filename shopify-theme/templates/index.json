@@ -3,9 +3,9 @@
     "hero": {
       "type": "hero",
       "blocks": {
-        "image-1": { "type": "image", "settings": { "link": "shopify://collections/gym-equipment" } },
-        "image-2": { "type": "image", "settings": { "link": "shopify://collections/football-equipment" } },
-        "image-3": { "type": "image", "settings": { "link": "shopify://collections/water-sports" } }
+        "image-1": { "type": "image", "settings": { "link": "/collections/gym-equipment" } },
+        "image-2": { "type": "image", "settings": { "link": "/collections/football-equipment" } },
+        "image-3": { "type": "image", "settings": { "link": "/collections/water-sports" } }
       },
       "block_order": ["image-1", "image-2", "image-3"],
       "settings": {}

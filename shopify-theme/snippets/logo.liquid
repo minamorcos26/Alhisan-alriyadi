@@ -1,0 +1,15 @@
+{%- comment -%} Site logo. Accepts: css_class (optional extra class) {%- endcomment -%}
+<a href="{{ routes.root_url }}" class="logo{% if css_class %} {{ css_class }}{% endif %}">
+  {%- if settings.logo != blank -%}
+    <img
+      src="{{ settings.logo | image_url: width: 400 }}"
+      srcset="{{ settings.logo | image_url: width: 200 }} 200w, {{ settings.logo | image_url: width: 400 }} 400w"
+      alt="{{ shop.name }}"
+      width="{{ settings.logo_width | default: 140 }}"
+      style="width: {{ settings.logo_width | default: 140 }}px; height: auto;"
+      loading="eager"
+    >
+  {%- else -%}
+    {{ shop.name }}
+  {%- endif -%}
+</a>

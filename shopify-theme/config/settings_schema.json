@@ -4,8 +4,34 @@
     "theme_name": "Alhisan Alriyadi",
     "theme_version": "1.0.0",
     "theme_author": "Alhisan Alriyadi",
-    "theme_documentation_url": "",
-    "theme_support_url": ""
+    "theme_documentation_url": "https://athletic-horse.com",
+    "theme_support_email": "info@athletic-horse.com"
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Logo width",
+        "min": 80,
+        "max": 260,
+        "step": 10,
+        "unit": "px",
+        "default": 140
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "Displayed at 32x32px. Use a square image."
+      }
+    ]
   },
   {
     "name": "Colors",
@@ -106,26 +132,22 @@
       {
         "type": "text",
         "id": "social_instagram_link",
-        "label": "Instagram",
-        "default": ""
+        "label": "Instagram"
       },
       {
         "type": "text",
         "id": "social_x_link",
-        "label": "X (Twitter)",
-        "default": ""
+        "label": "X (Twitter)"
       },
       {
         "type": "text",
         "id": "social_tiktok_link",
-        "label": "TikTok",
-        "default": ""
+        "label": "TikTok"
       },
       {
         "type": "text",
         "id": "social_snapchat_link",
-        "label": "Snapchat",
-        "default": ""
+        "label": "Snapchat"
       }
     ]
   },
