@@ -24,12 +24,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
 
-  {{ settings.font_display | font_face: font_display: 'swap' }}
-  {{ settings.font_body | font_face: font_display: 'swap' }}
-
   {{ 'theme.css' | asset_url | stylesheet_tag }}
 
   <style>
+    {{ settings.font_display | font_face: font_display: 'swap' }}
+    {{ settings.font_body | font_face: font_display: 'swap' }}
+
     :root {
       --color-background: {{ settings.color_background }};
       --color-background-alt: {{ settings.color_background_alt }};
