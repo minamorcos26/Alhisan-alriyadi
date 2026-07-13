@@ -5,12 +5,16 @@
         {%- assign coll = block.settings.collection -%}
         {%- assign slide_image = block.settings.image -%}
         {%- unless slide_image -%}{%- assign slide_image = coll.image -%}{%- endunless -%}
+        {%- assign has_photo = false -%}
+        {%- if block.settings.image_url != blank or slide_image -%}{%- assign has_photo = true -%}{%- endif -%}
         {%- assign slide_alt = block.settings.heading | default: coll.title -%}
         {%- assign loading_attr = 'lazy' -%}
         {%- if forloop.first -%}{%- assign loading_attr = 'eager' -%}{%- endif -%}
         {%- assign slide_url = coll.url | default: routes.all_products_collection_url -%}
-        <a href="{{ slide_url }}" class="hero-slide{% unless slide_image %} hero-slide--graphic hero-slide--{{ block.settings.icon | default: 'all' }}{% endunless %}" {{ block.shopify_attributes }}>
-          {%- if slide_image -%}
+        <a href="{{ slide_url }}" class="hero-slide{% unless has_photo %} hero-slide--graphic hero-slide--{{ block.settings.icon | default: 'all' }}{% endunless %}" {{ block.shopify_attributes }}>
+          {%- if block.settings.image_url != blank -%}
+            <img src="{{ block.settings.image_url }}" alt="{{ slide_alt }}" loading="{{ loading_attr }}" class="hero-slide__img">
+          {%- elsif slide_image -%}
             {{ slide_image | image_url: width: 1600 | image_tag: loading: loading_attr, widths: '750,1100,1600', alt: slide_alt, class: 'hero-slide__img' }}
           {%- else -%}
             <span class="hero-slide__icon-bg" aria-hidden="true">{%- render 'icon', name: block.settings.icon -%}</span>
@@ -60,6 +64,7 @@
       "settings": [
         { "type": "collection", "id": "collection", "label": "Collection" },
         { "type": "image_picker", "id": "image", "label": "Custom image", "info": "Leave blank to use the collection's image, or a bold color + icon panel matching the selected icon below." },
+        { "type": "url", "id": "image_url", "label": "Custom image URL", "info": "Takes priority over the image picker above. Useful for externally-hosted images." },
         {
           "type": "select",
           "id": "icon",
