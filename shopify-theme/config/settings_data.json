@@ -34,6 +34,7 @@
         "settings": {
           "description": "Your trusted sporting goods store in Saudi Arabia.",
           "shop_menu": "main-menu",
+          "about_page": "/pages/about-us",
           "show_payment_icons": true
         }
       }

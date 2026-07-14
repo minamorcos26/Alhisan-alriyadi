@@ -15,18 +15,24 @@
 
     <nav class="main-nav" aria-label="Primary">
       {%- for link in main_menu.links -%}
-        <div class="main-nav__item{% if link.links.size > 0 %} has-dropdown{% endif %}">
-          <a href="{{ link.url }}" class="main-nav__link">{{ link.title }}</a>
-          {%- if link.links.size > 0 -%}
-            <div class="main-nav__dropdown">
-              <ul>
-                {%- for child in link.links -%}
-                  <li><a href="{{ child.url }}">{{ child.title }}</a></li>
-                {%- endfor -%}
-              </ul>
-            </div>
-          {%- endif -%}
-        </div>
+        {%- assign show_in_desktop_nav = false -%}
+        {%- if link.url == '/collections' or link.url contains '/policies' or link.url contains '/pages/contact' -%}
+          {%- assign show_in_desktop_nav = true -%}
+        {%- endif -%}
+        {%- if show_in_desktop_nav -%}
+          <div class="main-nav__item{% if link.links.size > 0 %} has-dropdown{% endif %}">
+            <a href="{{ link.url }}" class="main-nav__link">{{ link.title }}</a>
+            {%- if link.links.size > 0 -%}
+              <div class="main-nav__dropdown">
+                <ul>
+                  {%- for child in link.links -%}
+                    <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
       {%- endfor -%}
     </nav>
 

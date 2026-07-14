@@ -18,20 +18,16 @@
     </div>
 
     {%- if coll -%}
-      {%- paginate coll.products by section.settings.product_count -%}
-        <div data-infinite-scroll data-next-url="{% if paginate.next %}{{ paginate.next.url }}{% endif %}">
-          <div class="product-grid" data-infinite-grid>
-            {%- for product in coll.products -%}
-              {%- render 'product-card', product: product -%}
-            {%- endfor -%}
-          </div>
-          {%- if paginate.next -%}
-            <div class="infinite-sentinel" data-infinite-sentinel>
-              <span class="infinite-sentinel__spinner" aria-hidden="true"></span>
-            </div>
-          {%- endif -%}
+      <div class="product-grid product-grid--6col">
+        {%- for product in coll.products limit: 20 -%}
+          {%- render 'product-card', product: product -%}
+        {%- endfor -%}
+      </div>
+      {%- if coll.products_count > 20 -%}
+        <div class="section__footer">
+          <a href="{{ coll.url }}" class="btn btn-outline">{{ 'sections.featured_collection.view_all' | t }}</a>
         </div>
-      {%- endpaginate -%}
+      {%- endif -%}
     {%- endif -%}
   </div>
 </section>
@@ -42,8 +38,7 @@
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading" },
     { "type": "textarea", "id": "text", "label": "Text" },
-    { "type": "collection", "id": "collection", "label": "Collection" },
-    { "type": "range", "id": "product_count", "label": "Products per page", "min": 4, "max": 12, "step": 4, "default": 8, "info": "More products load automatically as the visitor scrolls." }
+    { "type": "collection", "id": "collection", "label": "Collection" }
   ],
   "presets": [
     { "name": "Featured collection" }

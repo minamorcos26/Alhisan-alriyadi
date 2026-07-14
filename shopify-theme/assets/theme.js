@@ -570,6 +570,31 @@
     });
   }
 
+  function initProductSwiper() {
+    document.querySelectorAll('[data-product-swiper]').forEach(function (swiper) {
+      var track = swiper.querySelector('[data-swiper-track]');
+      var prevBtn = swiper.querySelector('[data-swiper-prev]');
+      var nextBtn = swiper.querySelector('[data-swiper-next]');
+      if (!track) return;
+
+      function step() {
+        var item = track.querySelector('.product-swiper__item');
+        var itemWidth = item ? item.getBoundingClientRect().width : track.clientWidth;
+        var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 0) || 0;
+        return itemWidth + gap;
+      }
+      function dirMultiplier() {
+        return getComputedStyle(track).direction === 'rtl' ? -1 : 1;
+      }
+      if (prevBtn) prevBtn.addEventListener('click', function () {
+        track.scrollBy({ left: -step() * dirMultiplier(), behavior: 'smooth' });
+      });
+      if (nextBtn) nextBtn.addEventListener('click', function () {
+        track.scrollBy({ left: step() * dirMultiplier(), behavior: 'smooth' });
+      });
+    });
+  }
+
   function initSizeGuide() {
     var trigger = document.querySelector('[data-size-guide-trigger]');
     var overlay = document.querySelector('[data-size-guide-overlay]');
@@ -609,5 +634,6 @@
     initPdpAddToCart();
     initInfiniteScroll();
     initCouponForms();
+    initProductSwiper();
   });
 })();

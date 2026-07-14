@@ -61,10 +61,17 @@
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
-        "collection": "gym-equipment",
-        "product_count": 8
+        "collection": "gym-equipment"
+      }
+    },
+    "swimming-swiper": {
+      "type": "product-swiper",
+      "settings": {
+        "collection": "goggles",
+        "heading": "Swimming Accessories",
+        "product_count": 12
       }
     }
   },
-  "order": ["category-strip", "hero-slider", "value-props", "category-tiles", "department-tiles", "featured-collection"]
+  "order": ["category-strip", "hero-slider", "value-props", "category-tiles", "department-tiles", "featured-collection", "swimming-swiper"]
 }

@@ -156,6 +156,22 @@
     "category_strip": {
       "all": "All Categories"
     },
+    "about": {
+      "eyebrow": "Our Story",
+      "heading": "About Alhisan Alriyadi",
+      "intro": "Alhisan Alriyadi has been outfitting teams, clubs, schools and events across Saudi Arabia since 2025. We specialize in customizing event gear — shirts, shorts, backpacks, medals, trophies and flags — so every team looks and feels ready on match day.",
+      "since_label": "In business since",
+      "location_label": "Based in",
+      "location_value": "Saudi Arabia",
+      "gear_heading": "What We Customize",
+      "gear_text": "From the kit on their backs to the trophy in their hands, we help you deck out your team or event from head to toe.",
+      "gear_shirt": "Shirts",
+      "gear_shorts": "Shorts",
+      "gear_backpack": "Backpacks",
+      "gear_medal": "Medals",
+      "gear_trophy": "Trophies",
+      "gear_flag": "Flags"
+    },
     "contact": {
       "heading": "Get in Touch",
       "text": "We're here to help with any questions about your order, our products, or anything else.",
