@@ -23,17 +23,6 @@
         {%- render 'social-links', class: 'social-row' -%}
       </div>
 
-      {%- if main_menu -%}
-      <div class="footer-col">
-        <div class="footer-col__title">{{ 'general.footer.shop' | t }}</div>
-        <ul>
-          {%- for link in main_menu.links limit: 6 -%}
-            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-          {%- endfor -%}
-        </ul>
-      </div>
-      {%- endif -%}
-
       {%- if policies_link -%}
       <div class="footer-col">
         <div class="footer-col__title">{{ 'general.footer.help' | t }}</div>
