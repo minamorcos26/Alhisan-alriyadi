@@ -4,7 +4,7 @@
       {%- for block in section.blocks -%}
         {%- assign coll = block.settings.collection -%}
         {%- if block.settings.icon == 'all' -%}
-          {%- assign strip_url = routes.all_products_collection_url -%}
+          {%- assign strip_url = routes.collections_url | default: '/collections' -%}
         {%- else -%}
           {%- assign strip_url = coll.url | default: routes.all_products_collection_url -%}
         {%- endif -%}
