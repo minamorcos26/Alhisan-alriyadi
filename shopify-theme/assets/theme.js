@@ -25,10 +25,9 @@
     if (closeBtn) closeBtn.addEventListener('click', close);
     overlay.addEventListener('click', function () {
       close();
-      closeFilters();
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { close(); closeFilters(); closeZoom(); }
+      if (e.key === 'Escape') { close(); closeZoom(); }
     });
   }
 
@@ -56,39 +55,19 @@
     });
   }
 
-  var filtersEl = null;
-  function closeFilters() {
-    if (filtersEl) filtersEl.classList.remove('is-open');
-    document.body.style.overflow = '';
-  }
-
-  function initFilters() {
-    var openBtn = document.querySelector('[data-filter-open]');
-    var closeBtn = document.querySelector('[data-filter-close]');
-    var applyBtn = document.querySelector('[data-filter-apply]');
-    filtersEl = document.querySelector('[data-filters]');
-    var overlay = document.querySelector('[data-overlay]');
-    if (!openBtn || !filtersEl) return;
-
-    function open() {
-      filtersEl.classList.add('is-open');
-      if (overlay) overlay.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-    }
-    openBtn.addEventListener('click', open);
-    if (closeBtn) closeBtn.addEventListener('click', closeFilters);
-    if (applyBtn) applyBtn.addEventListener('click', function () {
-      var form = document.getElementById('facets');
-      if (form) form.requestSubmit ? form.requestSubmit() : form.submit();
-    });
-  }
-
   function initSortAutoSubmit() {
     var select = document.querySelector('[data-sort-select]');
     if (!select) return;
     select.addEventListener('change', function () {
-      var form = document.getElementById('facets');
-      if (form) form.requestSubmit ? form.requestSubmit() : form.submit();
+      var opt = select.options[select.selectedIndex];
+      var params = new URLSearchParams();
+      if (opt.dataset.filterParam) {
+        params.set(opt.dataset.filterParam, opt.dataset.filterValue);
+      } else if (opt.dataset.sort) {
+        params.set('sort_by', opt.dataset.sort);
+      }
+      var base = (select.form && select.form.getAttribute('action')) || window.location.pathname;
+      window.location.href = base + (params.toString() ? '?' + params.toString() : '');
     });
   }
 
@@ -618,7 +597,6 @@
   document.addEventListener('DOMContentLoaded', function () {
     initDrawer();
     initDrawerAccordion();
-    initFilters();
     initSortAutoSubmit();
     initAnnouncement();
     initQuickAdd();

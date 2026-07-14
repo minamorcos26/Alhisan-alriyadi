@@ -1,80 +1,50 @@
 <div class="container category-layout">
+  {%- liquid
+    assign availability_filter = nil
+    for filter in collection.filters
+      if filter.param_name == 'filter.v.availability'
+        assign availability_filter = filter
+      endif
+    endfor
+    assign availability_active = false
+    if availability_filter
+      for value in availability_filter.values
+        if value.active
+          assign availability_active = true
+        endif
+      endfor
+    endif
+  -%}
   <form id="facets" method="get" action="{{ collection.url }}">
-    <aside class="filters" aria-label="{{ 'sections.main_collection.filters_title' | t }}" data-filters>
-      <div class="filter-sheet__head">
-        <strong>{{ 'sections.main_collection.filters_title' | t }}</strong>
-        <button type="button" class="icon-btn" data-filter-close aria-label="{{ 'general.header.close_menu' | t }}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <div class="filter-sheet__body">
-        {%- for filter in collection.filters -%}
-          <div class="filter-group">
-            <div class="filter-group__title">{{ filter.label }}</div>
-
-            {%- if filter.type == 'price_range' -%}
-              <div class="price-inputs">
-                <input type="number" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value }}" placeholder="{{ 'sections.main_collection.min' | t }}" aria-label="{{ 'sections.main_collection.min' | t }}">
-                <span>&ndash;</span>
-                <input type="number" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value }}" placeholder="{{ 'sections.main_collection.max' | t }}" aria-label="{{ 'sections.main_collection.max' | t }}">
-              </div>
-            {%- else -%}
-              {%- for value in filter.values -%}
-                <label class="filter-option">
-                  <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>
-                  <span>{{ value.label }}</span>
-                  <span class="count">{{ value.count }}</span>
-                </label>
-              {%- endfor -%}
-            {%- endif -%}
-          </div>
-        {%- endfor -%}
-      </div>
-      <div class="filter-sheet__foot">
-        <a href="{{ collection.url }}" class="btn btn-ghost btn-block">{{ 'sections.main_collection.reset' | t }}</a>
-        <button type="button" class="btn btn-primary btn-block" data-filter-apply>{{ 'sections.main_collection.show_results' | t }}</button>
-      </div>
-    </aside>
-
     <div>
-      {%- assign has_active_filters = false -%}
-      <div class="active-filters">
-        {%- for filter in collection.filters -%}
-          {%- for value in filter.active_values -%}
-            {%- assign has_active_filters = true -%}
-            <span class="chip">
-              <span>{{ value.label }}</span>
-              <a href="{{ value.url_to_remove }}" aria-label="{{ 'sections.main_collection.clear_filter' | t }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></svg>
-              </a>
-            </span>
-          {%- endfor -%}
-        {%- endfor -%}
-      </div>
-
       <div class="toolbar">
         <div class="toolbar__count"><strong>{{ collection.products_count }}</strong> {{ 'sections.main_collection.results' | t }}</div>
         <div class="toolbar__right">
-          <button type="button" class="btn btn-ghost btn-sm filter-toggle-mobile" data-filter-open>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path stroke-linecap="round" d="M4 7h16M7 12h10M10 17h4"/></svg>
-            <span>{{ 'sections.main_collection.filter' | t }}</span>
-          </button>
-          <select class="select" name="sort_by" aria-label="{{ 'sections.main_collection.sort_by' | t }}" data-sort-select>
-            {%- for option in collection.sort_options -%}
-              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
-                {%- case option.value -%}
-                  {%- when 'manual' -%}{{ 'sections.main_collection.sort_featured' | t }}
-                  {%- when 'best-selling' -%}{{ 'sections.main_collection.sort_best_selling' | t }}
-                  {%- when 'title-ascending' -%}{{ 'sections.main_collection.sort_title_asc' | t }}
-                  {%- when 'title-descending' -%}{{ 'sections.main_collection.sort_title_desc' | t }}
-                  {%- when 'price-ascending' -%}{{ 'sections.main_collection.sort_price_asc' | t }}
-                  {%- when 'price-descending' -%}{{ 'sections.main_collection.sort_price_desc' | t }}
-                  {%- when 'created-descending' -%}{{ 'sections.main_collection.sort_newest' | t }}
-                  {%- when 'created-ascending' -%}{{ 'sections.main_collection.sort_oldest' | t }}
-                  {%- else -%}{{ option.name }}
-                {%- endcase -%}
-              </option>
-            {%- endfor -%}
+          <select class="select" aria-label="{{ 'sections.main_collection.sort_by' | t }}" data-sort-select>
+            <optgroup label="{{ 'sections.main_collection.sort_by' | t }}">
+              {%- for option in collection.sort_options -%}
+                <option value="sort:{{ option.value }}" data-sort="{{ option.value }}" {% if option.value == collection.sort_by and availability_active == false %}selected{% endif %}>
+                  {%- case option.value -%}
+                    {%- when 'manual' -%}{{ 'sections.main_collection.sort_featured' | t }}
+                    {%- when 'best-selling' -%}{{ 'sections.main_collection.sort_best_selling' | t }}
+                    {%- when 'title-ascending' -%}{{ 'sections.main_collection.sort_title_asc' | t }}
+                    {%- when 'title-descending' -%}{{ 'sections.main_collection.sort_title_desc' | t }}
+                    {%- when 'price-ascending' -%}{{ 'sections.main_collection.sort_price_asc' | t }}
+                    {%- when 'price-descending' -%}{{ 'sections.main_collection.sort_price_desc' | t }}
+                    {%- when 'created-descending' -%}{{ 'sections.main_collection.sort_newest' | t }}
+                    {%- when 'created-ascending' -%}{{ 'sections.main_collection.sort_oldest' | t }}
+                    {%- else -%}{{ option.name }}
+                  {%- endcase -%}
+                </option>
+              {%- endfor -%}
+            </optgroup>
+            {%- if availability_filter -%}
+              <optgroup label="{{ availability_filter.label }}">
+                {%- for value in availability_filter.values -%}
+                  <option value="avail:{{ value.value }}" data-filter-param="{{ value.param_name }}" data-filter-value="{{ value.value }}" {% if value.active %}selected{% endif %}>{{ value.label }} ({{ value.count }})</option>
+                {%- endfor -%}
+              </optgroup>
+            {%- endif -%}
           </select>
         </div>
       </div>
