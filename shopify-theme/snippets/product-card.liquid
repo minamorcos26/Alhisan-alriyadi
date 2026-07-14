@@ -29,6 +29,7 @@
   <a href="{{ product.url }}" class="product-card__link">
     <span class="product-card__type">{{ product.type }}</span>
     <h3 class="product-card__title">{{ product.title }}</h3>
+    {{ product.metafields.judgeme.badge }}
     <div class="product-card__price">
       {%- if product.compare_at_price > product.price -%}
         <s class="product-card__compare">{{ product.compare_at_price | money_without_trailing_zeros }}</s>
