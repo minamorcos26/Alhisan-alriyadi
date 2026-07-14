@@ -432,7 +432,12 @@
 
     thumbs.forEach(function (thumb) {
       thumb.addEventListener('click', function () {
+        // The main image carries a srcset from the initial render; browsers prefer
+        // srcset over src, so it must be cleared or the swap silently has no effect.
+        mainImg.removeAttribute('srcset');
+        mainImg.removeAttribute('sizes');
         mainImg.src = thumb.getAttribute('data-src');
+        mainImg.setAttribute('data-zoom-src', thumb.getAttribute('data-src'));
         thumbs.forEach(function (t) { t.classList.remove('is-active'); });
         thumb.classList.add('is-active');
       });
@@ -559,6 +564,10 @@
             : submitBtn.getAttribute('data-label-unavailable');
         }
         if (mainImg && variant.featured_image && variant.featured_image.src) {
+          // The main image carries a srcset from the initial render; browsers prefer
+          // srcset over src, so it must be cleared or the swap silently has no effect.
+          mainImg.removeAttribute('srcset');
+          mainImg.removeAttribute('sizes');
           mainImg.src = variant.featured_image.src;
           mainImg.setAttribute('data-zoom-src', variant.featured_image.src);
         }
