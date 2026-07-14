@@ -1,4 +1,5 @@
 {%- assign coll = collections[section.settings.collection] -%}
+{%- assign top_products = coll.products | slice: 0, 21 -%}
 
 <section class="section">
   <div class="container">
@@ -19,11 +20,11 @@
 
     {%- if coll -%}
       <div class="product-grid product-grid--6col">
-        {%- for product in coll.products limit: 20 -%}
+        {%- for product in top_products limit: 20 -%}
           {%- render 'product-card', product: product -%}
         {%- endfor -%}
       </div>
-      {%- if coll.products_count > 20 -%}
+      {%- if top_products.size > 20 -%}
         <div class="section__footer">
           <a href="{{ coll.url }}" class="btn btn-outline">{{ 'sections.featured_collection.view_all' | t }}</a>
         </div>
