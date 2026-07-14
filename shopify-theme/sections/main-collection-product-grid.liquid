@@ -61,7 +61,19 @@
           </button>
           <select class="select" name="sort_by" aria-label="{{ 'sections.main_collection.sort_by' | t }}" data-sort-select>
             {%- for option in collection.sort_options -%}
-              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name }}</option>
+              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
+                {%- case option.value -%}
+                  {%- when 'manual' -%}{{ 'sections.main_collection.sort_featured' | t }}
+                  {%- when 'best-selling' -%}{{ 'sections.main_collection.sort_best_selling' | t }}
+                  {%- when 'title-ascending' -%}{{ 'sections.main_collection.sort_title_asc' | t }}
+                  {%- when 'title-descending' -%}{{ 'sections.main_collection.sort_title_desc' | t }}
+                  {%- when 'price-ascending' -%}{{ 'sections.main_collection.sort_price_asc' | t }}
+                  {%- when 'price-descending' -%}{{ 'sections.main_collection.sort_price_desc' | t }}
+                  {%- when 'created-descending' -%}{{ 'sections.main_collection.sort_newest' | t }}
+                  {%- when 'created-ascending' -%}{{ 'sections.main_collection.sort_oldest' | t }}
+                  {%- else -%}{{ option.name }}
+                {%- endcase -%}
+              </option>
             {%- endfor -%}
           </select>
         </div>

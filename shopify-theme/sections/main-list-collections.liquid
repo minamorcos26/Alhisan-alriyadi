@@ -1,7 +1,7 @@
 <div class="container category-header">
   <h1>{{ 'sections.list_collections.heading' | t }}</h1>
 </div>
-<div class="container">
+<div class="container grid-bottom-space">
   {%- paginate collections by 24 -%}
     <div data-infinite-scroll data-next-url="{% if paginate.next %}{{ paginate.next.url }}{% endif %}">
       <div class="category-grid" data-infinite-grid>
@@ -12,8 +12,10 @@
               {%- if tile_image -%}
                 {{ tile_image | image_url: width: 400 | image_tag: loading: 'lazy', widths: '200,300,400', alt: coll.title }}
               {%- endif -%}
-              <span class="category-tile__name">{{ coll.title }}</span>
-              <span class="category-tile__count">{{ coll.all_products_count }} {{ 'sections.main_collection.product_count' | t }}</span>
+              <span class="category-tile__label">
+                <span class="category-tile__name">{{ coll.title }}</span>
+                <span class="category-tile__count">{{ coll.all_products_count }} {{ 'sections.main_collection.product_count' | t }}</span>
+              </span>
             </a>
           {%- endunless -%}
         {%- endfor -%}

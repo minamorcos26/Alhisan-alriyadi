@@ -20,23 +20,7 @@
         {%- if section.settings.description != blank -%}
           <p>{{ section.settings.description }}</p>
         {%- endif -%}
-        <div class="social-row">
-          {%- if settings.social_instagram_link != blank -%}
-            <a href="{{ settings.social_instagram_link }}" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
-          {%- endif -%}
-          {%- if settings.social_x_link != blank -%}
-            <a href="{{ settings.social_x_link }}" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4l16 16M20 4 4 20"/></svg></a>
-          {%- endif -%}
-          {%- if settings.social_tiktok_link != blank -%}
-            <a href="{{ settings.social_tiktok_link }}" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M15 4v9.5a3.5 3.5 0 1 1-3-3.46M15 4a4 4 0 0 0 4 4"/></svg></a>
-          {%- endif -%}
-          {%- if settings.social_snapchat_link != blank -%}
-            <a href="{{ settings.social_snapchat_link }}" aria-label="Snapchat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.5 0 4.5 2 4.5 4.5 0 1.2 0 2.3.3 3 .3.6 1 .9 1.7 1.1.4.1.5.6.2.9-.4.4-1 .7-1.7.9 0 .4.1.8-.2 1.1-.3.3-1 .3-1.5.3-.4.7-1.2 1.7-3.3 1.7s-2.9-1-3.3-1.7c-.5 0-1.2 0-1.5-.3-.3-.3-.2-.7-.2-1.1-.7-.2-1.3-.5-1.7-.9-.3-.3-.2-.8.2-.9.7-.2 1.4-.5 1.7-1.1.3-.7.3-1.8.3-3C7.5 5 9.5 3 12 3Z"/></svg></a>
-          {%- endif -%}
-          {%- if settings.social_whatsapp_number != blank -%}
-            <a href="https://wa.me/{{ settings.social_whatsapp_number }}" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M4 20l1.3-4A8 8 0 1 1 9 19.6L4 20Z"/></svg></a>
-          {%- endif -%}
-        </div>
+        {%- render 'social-links' -%}
       </div>
 
       {%- if main_menu -%}

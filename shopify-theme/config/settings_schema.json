@@ -154,6 +154,11 @@
         "id": "social_whatsapp_number",
         "label": "WhatsApp number",
         "info": "Digits only with country code, e.g. 966573873497"
+      },
+      {
+        "type": "url",
+        "id": "social_linktree_link",
+        "label": "Linktree / general social link"
       }
     ]
   },
