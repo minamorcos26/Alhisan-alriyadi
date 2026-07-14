@@ -61,7 +61,7 @@
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
-        "collection": "gym-equipment"
+        "collection": "all-products-newest"
       }
     },
     "swimming-swiper": {
