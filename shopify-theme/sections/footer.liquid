@@ -20,7 +20,7 @@
         {%- if section.settings.description != blank -%}
           <p>{{ section.settings.description }}</p>
         {%- endif -%}
-        {%- render 'social-links' -%}
+        {%- render 'social-links', class: 'social-row' -%}
       </div>
 
       {%- if main_menu -%}
@@ -48,14 +48,14 @@
       </div>
       {%- endif -%}
 
+      {%- if section.settings.about_page != blank -%}
       <div class="footer-col">
         <div class="footer-col__title">{{ 'general.footer.company' | t }}</div>
         <ul>
-          {%- if section.settings.about_page != blank -%}
-            <li><a href="{{ section.settings.about_page }}">{{ 'general.footer.about' | t }}</a></li>
-          {%- endif -%}
+          <li><a href="{{ section.settings.about_page }}">{{ 'general.footer.about' | t }}</a></li>
         </ul>
       </div>
+      {%- endif -%}
     </div>
 
     <div class="footer-bottom">
