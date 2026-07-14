@@ -687,6 +687,19 @@ html[lang="ar"] .product-detail__description h2 { text-transform: none; }
    otherwise the fill order renders mirrored. */
 .jdgm-prev-badge, .jdgm-star-rating { direction: ltr; unicode-bidi: isolate; }
 
+/* Fallback shown while a product has no reviews yet, so every product (existing or
+   added later) always has a rating slot instead of an empty gap. */
+.product-card__rating-placeholder, .product-detail__rating-placeholder {
+  display: flex; align-items: center; gap: var(--space-1); direction: ltr; unicode-bidi: isolate;
+  color: var(--color-ink-muted); font-size: 0.78rem;
+}
+.product-card__rating-placeholder { margin-block: 2px 0; }
+.product-detail__rating-placeholder { margin-block: var(--space-2) var(--space-4); }
+.product-card__rating-placeholder svg, .product-detail__rating-placeholder svg { width: 14px; height: 14px; flex-shrink: 0; }
+.product-card__rating-placeholder span { margin-inline-start: var(--space-1); }
+.product-detail__rating-placeholder a { margin-inline-start: var(--space-1); color: var(--color-ink-muted); text-decoration: underline; text-underline-offset: 2px; }
+.product-detail__rating-placeholder a:hover { color: var(--color-ink); }
+
 /* Zoom lightbox */
 .zoom-overlay {
   position: fixed; inset: 0; background: rgba(10,10,10,0.94); z-index: 300; display: none;

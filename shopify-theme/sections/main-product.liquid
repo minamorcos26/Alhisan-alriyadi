@@ -56,7 +56,14 @@
   <div class="product-detail__info">
     {%- if product.vendor != blank -%}<span class="product-detail__vendor">{{ product.vendor }}</span>{%- endif -%}
     <h1>{{ product.title }}</h1>
-    {{ product.metafields.judgeme.badge }}
+    {%- if product.metafields.judgeme.badge != blank -%}
+      {{ product.metafields.judgeme.badge }}
+    {%- else -%}
+      <div class="product-detail__rating-placeholder">
+        {%- for i in (1..5) -%}{%- render 'icon', name: 'star-outline' -%}{%- endfor -%}
+        <a href="#judgeme_product_reviews">{{ 'sections.product.no_reviews_cta' | t }}</a>
+      </div>
+    {%- endif -%}
     <div class="product-detail__price">
       {%- if product.compare_at_price > product.price -%}
         <s class="product-card__compare">{{ product.compare_at_price | money_without_trailing_zeros }}</s>
@@ -164,7 +171,7 @@
   </div>
 </div>
 
-<div class="container product-detail__reviews">
+<div class="container product-detail__reviews" id="judgeme_product_reviews">
   {{ product.metafields.judgeme.widget }}
 </div>
 
