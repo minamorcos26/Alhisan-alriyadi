@@ -1,14 +1,10 @@
-{%- liquid
-  assign heading = section.settings.heading | default: 'sections.about.heading' | t
-  assign intro = section.settings.intro | default: 'sections.about.intro' | t
-  assign founded_year = section.settings.founded_year | default: 2025
--%}
+{%- assign founded_year = section.settings.founded_year | default: 2025 -%}
 
 <div class="about-hero">
   <div class="container about-hero__inner">
     <span class="about-hero__eyebrow">{{ 'sections.about.eyebrow' | t }}</span>
-    <h1>{{ heading }}</h1>
-    <p class="about-hero__intro">{{ intro }}</p>
+    <h1>{% if section.settings.heading != blank %}{{ section.settings.heading }}{% else %}{{ 'sections.about.heading' | t }}{% endif %}</h1>
+    <p class="about-hero__intro">{% if section.settings.intro != blank %}{{ section.settings.intro }}{% else %}{{ 'sections.about.intro' | t }}{% endif %}</p>
     <div class="about-hero__stats">
       <div class="about-hero__stat">
         <b>{{ founded_year }}</b>

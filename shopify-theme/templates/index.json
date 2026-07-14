@@ -68,7 +68,6 @@
       "type": "product-swiper",
       "settings": {
         "collection": "goggles",
-        "heading": "Swimming Accessories",
         "product_count": 12
       }
     }
