@@ -142,7 +142,8 @@
       "each": "each",
       "coupon_placeholder": "Discount code",
       "apply": "Apply",
-      "invalid_coupon": "This coupon code is invalid or expired."
+      "invalid_coupon": "This coupon code is invalid or expired.",
+      "empty_coupon": "Please enter a coupon code."
     },
     "404": {
       "heading": "Page Not Found",

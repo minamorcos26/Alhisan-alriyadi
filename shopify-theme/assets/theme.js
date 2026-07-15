@@ -152,7 +152,7 @@
     }
 
     foot.innerHTML = '' +
-      '<div class="coupon-form" data-coupon-form data-str-invalid="' + escapeHtml(str.strInvalidCoupon) + '">' +
+      '<div class="coupon-form" data-coupon-form data-str-invalid="' + escapeHtml(str.strInvalidCoupon) + '" data-str-empty-coupon="' + escapeHtml(str.strEmptyCoupon) + '">' +
         '<input type="text" name="coupon" placeholder="' + escapeHtml(str.strCouponPlaceholder) + '" class="coupon-form__input" autocomplete="off">' +
         '<button type="button" class="btn btn-ghost coupon-form__btn">' + escapeHtml(str.strApply) + '</button>' +
       '</div>' +
@@ -223,6 +223,7 @@
       var btn = wrap.querySelector('button');
       if (!input || !btn) return;
       var invalidMessage = wrap.dataset.strInvalid || 'Invalid or expired coupon code.';
+      var emptyMessage = wrap.dataset.strEmptyCoupon || 'Please enter a coupon code.';
 
       function clearError() {
         var err = wrap.querySelector('[data-coupon-error]');
@@ -230,19 +231,22 @@
         input.classList.remove('is-invalid');
       }
 
-      function showError() {
+      function showError(message) {
         clearError();
         input.classList.add('is-invalid');
         var err = document.createElement('div');
         err.className = 'coupon-form__error';
         err.setAttribute('data-coupon-error', '');
-        err.textContent = invalidMessage;
+        err.textContent = message;
         wrap.appendChild(err);
       }
 
       function apply() {
         var code = input.value.trim();
-        if (!code) return;
+        if (!code) {
+          showError(emptyMessage);
+          return;
+        }
         clearError();
         btn.disabled = true;
         fetch('/cart/update.js', {
@@ -255,7 +259,7 @@
             btn.disabled = false;
             var applied = cart.cart_level_discount_applications && cart.cart_level_discount_applications.length > 0;
             if (!applied) {
-              showError();
+              showError(invalidMessage);
               return;
             }
             if (document.querySelector('[data-cart-drawer]')) {
@@ -266,7 +270,7 @@
           })
           .catch(function () {
             btn.disabled = false;
-            showError();
+            showError(invalidMessage);
           });
       }
 
