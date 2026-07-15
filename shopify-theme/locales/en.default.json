@@ -122,9 +122,7 @@
       "size_guide_col_size": "Size",
       "size_guide_col_chest": "Chest (cm)",
       "size_guide_col_waist": "Waist (cm)",
-      "size_guide_note": "Measurements are approximate. For the best fit, compare with a similar item you already own.",
-      "no_reviews": "No reviews yet",
-      "no_reviews_cta": "Be the first to write a review"
+      "size_guide_note": "Measurements are approximate. For the best fit, compare with a similar item you already own."
     },
     "cart": {
       "title": "Your Cart",
