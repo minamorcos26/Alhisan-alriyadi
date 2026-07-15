@@ -595,6 +595,22 @@
     });
   }
 
+  function initStickyAtc() {
+    var bar = document.querySelector('[data-sticky-atc]');
+    var trigger = document.querySelector('[data-add-to-cart]');
+    if (!bar || !trigger) return;
+
+    var stickyBtn = bar.querySelector('[data-sticky-atc-btn]');
+    if (stickyBtn) stickyBtn.addEventListener('click', function () { trigger.click(); });
+
+    var observer = new IntersectionObserver(function (entries) {
+      var entry = entries[0];
+      var scrolledPast = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+      bar.classList.toggle('is-visible', scrolledPast);
+    }, { threshold: 0 });
+    observer.observe(trigger);
+  }
+
   function initSizeGuide() {
     var trigger = document.querySelector('[data-size-guide-trigger]');
     var overlay = document.querySelector('[data-size-guide-overlay]');
@@ -635,5 +651,6 @@
     initInfiniteScroll();
     initCouponForms();
     initProductSwiper();
+    initStickyAtc();
   });
 })();

@@ -171,6 +171,23 @@
   </div>
 </div>
 
+<div class="sticky-atc" data-sticky-atc>
+  <div class="container sticky-atc__inner">
+    <div class="sticky-atc__media">
+      {%- if product.featured_image -%}
+        {{ product.featured_image | image_url: width: 120 | image_tag: alt: product.title, loading: 'lazy' }}
+      {%- endif -%}
+    </div>
+    <div class="sticky-atc__info">
+      <span class="sticky-atc__title">{{ product.title }}</span>
+      <span class="sticky-atc__price">{{ product.price | money_without_trailing_zeros }}</span>
+    </div>
+    <button type="button" class="btn btn-primary sticky-atc__btn" data-sticky-atc-btn {% unless product.available %}disabled{% endunless %}>
+      {%- if product.available -%}{{ 'sections.product.add_to_cart' | t }}{%- else -%}{{ 'sections.product.sold_out' | t }}{%- endif -%}
+    </button>
+  </div>
+</div>
+
 <div class="container product-detail__reviews" id="judgeme_product_reviews">
   {{ product.metafields.judgeme.widget }}
 </div>
