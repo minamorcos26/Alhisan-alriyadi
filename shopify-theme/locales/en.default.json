@@ -141,7 +141,8 @@
       "update": "Update Cart",
       "each": "each",
       "coupon_placeholder": "Discount code",
-      "apply": "Apply"
+      "apply": "Apply",
+      "invalid_coupon": "This coupon code is invalid or expired."
     },
     "404": {
       "heading": "Page Not Found",

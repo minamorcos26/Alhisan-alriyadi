@@ -42,10 +42,10 @@
         assign tax_cents = cart.total_price | minus: subtotal_excl_cents
       -%}
       <div class="cart-summary">
-        <form class="coupon-form" data-coupon-form>
+        <div class="coupon-form" data-coupon-form data-str-invalid="{{ 'sections.cart.invalid_coupon' | t }}">
           <input type="text" name="coupon" placeholder="{{ 'sections.cart.coupon_placeholder' | t }}" class="coupon-form__input" autocomplete="off">
-          <button type="submit" class="btn btn-ghost coupon-form__btn">{{ 'sections.cart.apply' | t }}</button>
-        </form>
+          <button type="button" class="btn btn-ghost coupon-form__btn">{{ 'sections.cart.apply' | t }}</button>
+        </div>
 
         <div class="cart-summary__totals-block">
           {%- if cart.cart_level_discount_applications.size > 0 -%}

@@ -152,10 +152,10 @@
     }
 
     foot.innerHTML = '' +
-      '<form class="coupon-form" data-coupon-form>' +
+      '<div class="coupon-form" data-coupon-form data-str-invalid="' + escapeHtml(str.strInvalidCoupon) + '">' +
         '<input type="text" name="coupon" placeholder="' + escapeHtml(str.strCouponPlaceholder) + '" class="coupon-form__input" autocomplete="off">' +
-        '<button type="submit" class="btn btn-ghost coupon-form__btn">' + escapeHtml(str.strApply) + '</button>' +
-      '</form>' +
+        '<button type="button" class="btn btn-ghost coupon-form__btn">' + escapeHtml(str.strApply) + '</button>' +
+      '</div>' +
       '<div class="cart-drawer__totals">' +
         '<div class="cart-drawer__totals-row"><span>' + escapeHtml(str.strSubtotalExcl) + '</span><span>' + formatMoney(subtotalExcl) + '</span></div>' +
         discountHtml +
@@ -216,15 +216,63 @@
   }
 
   function initCouponForms() {
-    document.querySelectorAll('[data-coupon-form]').forEach(function (form) {
-      if (form.dataset.wired) return;
-      form.dataset.wired = 'true';
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var input = form.querySelector('input[name="coupon"]');
-        var code = input && input.value.trim();
+    document.querySelectorAll('[data-coupon-form]').forEach(function (wrap) {
+      if (wrap.dataset.wired) return;
+      wrap.dataset.wired = 'true';
+      var input = wrap.querySelector('input[name="coupon"]');
+      var btn = wrap.querySelector('button');
+      if (!input || !btn) return;
+      var invalidMessage = wrap.dataset.strInvalid || 'Invalid or expired coupon code.';
+
+      function clearError() {
+        var err = wrap.querySelector('[data-coupon-error]');
+        if (err) err.remove();
+        input.classList.remove('is-invalid');
+      }
+
+      function showError() {
+        clearError();
+        input.classList.add('is-invalid');
+        var err = document.createElement('div');
+        err.className = 'coupon-form__error';
+        err.setAttribute('data-coupon-error', '');
+        err.textContent = invalidMessage;
+        wrap.appendChild(err);
+      }
+
+      function apply() {
+        var code = input.value.trim();
         if (!code) return;
-        window.location.href = '/discount/' + encodeURIComponent(code) + '?redirect=' + encodeURIComponent('/cart');
+        clearError();
+        btn.disabled = true;
+        fetch('/cart/update.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ discount: code })
+        })
+          .then(function (res) { return res.json(); })
+          .then(function (cart) {
+            btn.disabled = false;
+            var applied = cart.cart_level_discount_applications && cart.cart_level_discount_applications.length > 0;
+            if (!applied) {
+              showError();
+              return;
+            }
+            if (document.querySelector('[data-cart-drawer]')) {
+              refreshCartDrawer();
+            } else {
+              window.location.reload();
+            }
+          })
+          .catch(function () {
+            btn.disabled = false;
+            showError();
+          });
+      }
+
+      btn.addEventListener('click', function (e) { e.preventDefault(); apply(); });
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); apply(); }
       });
     });
   }
