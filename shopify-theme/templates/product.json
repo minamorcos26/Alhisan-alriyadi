@@ -7,7 +7,6 @@
     "related-products": {
       "type": "featured-collection",
       "settings": {
-        "heading": "t:sections.featured_collection.you_might_also_like",
         "collection": "gym-equipment",
         "product_count": 4
       }

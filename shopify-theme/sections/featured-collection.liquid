@@ -4,7 +4,15 @@
   <div class="container">
     <div class="section__head">
       <div>
-        <h2 class="section__title">{{ section.settings.heading | default: coll.title }}</h2>
+        <h2 class="section__title">
+          {%- if section.settings.heading != blank -%}
+            {{ section.settings.heading }}
+          {%- elsif product -%}
+            {{ 'sections.featured_collection.you_might_also_like' | t }}
+          {%- else -%}
+            {{ coll.title }}
+          {%- endif -%}
+        </h2>
         {%- if section.settings.text != blank -%}
           <p class="section__desc">{{ section.settings.text }}</p>
         {%- endif -%}
