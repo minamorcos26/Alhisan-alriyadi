@@ -108,65 +108,105 @@
 
   var VAT_RATE = 1.15; // Standard Saudi VAT — prices are tax-inclusive on this store
 
+  // Cart line items from /cart.js don't carry inventory data, so cap info for the
+  // cart drawer's qty steppers is fetched per product and cached by handle.
+  var productDataCache = {};
+  function fetchProductData(handle) {
+    if (productDataCache[handle]) return productDataCache[handle];
+    productDataCache[handle] = fetch('/products/' + handle + '.js', { headers: { Accept: 'application/json' } })
+      .then(function (r) { return r.json(); })
+      .catch(function () { return null; });
+    return productDataCache[handle];
+  }
+
+  function getVariantStockMax(productData, variantId) {
+    if (!productData || !productData.variants) return null;
+    var variant = productData.variants.filter(function (v) { return v.id === variantId; })[0];
+    if (!variant) return null;
+    var tracked = variant.inventory_management === 'shopify' && variant.inventory_policy === 'deny';
+    return tracked ? variant.inventory_quantity : null;
+  }
+
+  // Disables/dims a qty-stepper's increase button once its input is at (or over) its max.
+  function refreshQtyStepperState(input) {
+    var stepper = input.closest('.qty-stepper');
+    var inc = stepper && stepper.querySelector('[data-qty-increase], [data-drawer-qty-increase]');
+    if (!inc) return;
+    var max = input.getAttribute('max');
+    var minVal = parseInt(input.getAttribute('min'), 10) || 0;
+    var val = parseInt(input.value, 10) || minVal;
+    inc.disabled = max !== null && max !== '' && val >= parseInt(max, 10);
+  }
+
   function renderCartDrawer(cart) {
     var drawer = document.querySelector('[data-cart-drawer]');
     var body = document.querySelector('[data-cart-drawer-body]');
     var foot = document.querySelector('[data-cart-drawer-foot]');
-    if (!drawer || !body || !foot) return;
+    if (!drawer || !body || !foot) return Promise.resolve();
     var str = drawer.dataset;
 
     if (!cart.items.length) {
       body.innerHTML = '<div class="cart-drawer__empty"><p>' + escapeHtml(str.strEmpty) + '</p><a href="' + str.allProductsUrl + '" class="btn btn-primary">' + escapeHtml(str.strContinue) + '</a></div>';
       foot.innerHTML = '';
-      return;
+      return Promise.resolve();
     }
 
-    body.innerHTML = '<ul class="cart-drawer__list">' + cart.items.map(function (item) {
-      var variantLine = (item.variant_title && item.variant_title !== 'Default Title')
-        ? '<div class="cart-drawer__variant">' + escapeHtml(item.variant_title) + '</div>' : '';
-      return '' +
-        '<li class="cart-drawer__row" data-cart-drawer-item data-key="' + item.key + '">' +
-          '<a href="' + item.url + '" class="cart-drawer__media">' + (item.image ? '<img src="' + item.image.replace(/(\.[a-z0-9]+)(\?|$)/i, '_200x$1$2') + '" alt="' + escapeHtml(item.title) + '" loading="lazy">' : '') + '</a>' +
-          '<div class="cart-drawer__info">' +
-            '<a href="' + item.url + '" class="cart-drawer__title">' + escapeHtml(item.product_title) + '</a>' +
-            variantLine +
-            '<div class="qty-stepper qty-stepper--sm" data-drawer-qty>' +
-              '<button type="button" class="qty-stepper__btn" data-drawer-qty-decrease aria-label="Decrease quantity">&minus;</button>' +
-              '<input type="number" class="qty-stepper__input" value="' + item.quantity + '" min="0" data-drawer-qty-input>' +
-              '<button type="button" class="qty-stepper__btn" data-drawer-qty-increase aria-label="Increase quantity">+</button>' +
+    var stockMaxByKey = {};
+    return Promise.all(cart.items.map(function (item) {
+      var handle = item.url.split('?')[0].split('/').pop();
+      return fetchProductData(handle).then(function (productData) {
+        stockMaxByKey[item.key] = getVariantStockMax(productData, item.variant_id);
+      });
+    })).then(function () {
+      body.innerHTML = '<ul class="cart-drawer__list">' + cart.items.map(function (item) {
+        var variantLine = (item.variant_title && item.variant_title !== 'Default Title')
+          ? '<div class="cart-drawer__variant">' + escapeHtml(item.variant_title) + '</div>' : '';
+        var stockMax = stockMaxByKey[item.key];
+        var maxAttr = stockMax !== null ? ' max="' + stockMax + '"' : '';
+        return '' +
+          '<li class="cart-drawer__row" data-cart-drawer-item data-key="' + item.key + '">' +
+            '<a href="' + item.url + '" class="cart-drawer__media">' + (item.image ? '<img src="' + item.image.replace(/(\.[a-z0-9]+)(\?|$)/i, '_200x$1$2') + '" alt="' + escapeHtml(item.title) + '" loading="lazy">' : '') + '</a>' +
+            '<div class="cart-drawer__info">' +
+              '<a href="' + item.url + '" class="cart-drawer__title">' + escapeHtml(item.product_title) + '</a>' +
+              variantLine +
+              '<div class="qty-stepper qty-stepper--sm" data-drawer-qty>' +
+                '<button type="button" class="qty-stepper__btn" data-drawer-qty-decrease aria-label="Decrease quantity">&minus;</button>' +
+                '<input type="number" class="qty-stepper__input" value="' + item.quantity + '" min="0"' + maxAttr + ' data-drawer-qty-input>' +
+                '<button type="button" class="qty-stepper__btn" data-drawer-qty-increase aria-label="Increase quantity">+</button>' +
+              '</div>' +
+              '<button type="button" class="cart-drawer__remove" data-drawer-remove>' + escapeHtml(str.strRemove) + '</button>' +
             '</div>' +
-            '<button type="button" class="cart-drawer__remove" data-drawer-remove>' + escapeHtml(str.strRemove) + '</button>' +
-          '</div>' +
-          '<div class="cart-drawer__total">' + formatMoney(item.final_line_price) + '</div>' +
-        '</li>';
-    }).join('') + '</ul>';
+            '<div class="cart-drawer__total">' + formatMoney(item.final_line_price) + '</div>' +
+          '</li>';
+      }).join('') + '</ul>';
 
-    var totalIncl = cart.total_price;
-    var subtotalExcl = Math.round(totalIncl / VAT_RATE);
-    var taxAmount = totalIncl - subtotalExcl;
-    var discountHtml = '';
-    if (cart.cart_level_discount_applications && cart.cart_level_discount_applications.length) {
-      discountHtml = cart.cart_level_discount_applications.map(function (d) {
-        return '<div class="cart-drawer__totals-row cart-drawer__totals-row--discount"><span>' + escapeHtml(d.title) + '</span><span>&minus;' + formatMoney(d.total_allocated_amount) + '</span></div>';
-      }).join('');
-    }
+      var totalIncl = cart.total_price;
+      var subtotalExcl = Math.round(totalIncl / VAT_RATE);
+      var taxAmount = totalIncl - subtotalExcl;
+      var discountHtml = '';
+      if (cart.cart_level_discount_applications && cart.cart_level_discount_applications.length) {
+        discountHtml = cart.cart_level_discount_applications.map(function (d) {
+          return '<div class="cart-drawer__totals-row cart-drawer__totals-row--discount"><span>' + escapeHtml(d.title) + '</span><span>&minus;' + formatMoney(d.total_allocated_amount) + '</span></div>';
+        }).join('');
+      }
 
-    foot.innerHTML = '' +
-      '<div class="coupon-form" data-coupon-form data-str-invalid="' + escapeHtml(str.strInvalidCoupon) + '" data-str-empty-coupon="' + escapeHtml(str.strEmptyCoupon) + '">' +
-        '<input type="text" name="coupon" placeholder="' + escapeHtml(str.strCouponPlaceholder) + '" class="coupon-form__input" autocomplete="off">' +
-        '<button type="button" class="btn btn-ghost coupon-form__btn">' + escapeHtml(str.strApply) + '</button>' +
-      '</div>' +
-      '<div class="cart-drawer__totals">' +
-        '<div class="cart-drawer__totals-row"><span>' + escapeHtml(str.strSubtotalExcl) + '</span><span>' + formatMoney(subtotalExcl) + '</span></div>' +
-        discountHtml +
-        '<div class="cart-drawer__totals-row"><span>' + escapeHtml(str.strVat) + '</span><span>' + formatMoney(taxAmount) + '</span></div>' +
-        '<div class="cart-drawer__totals-row cart-drawer__totals-row--total"><span>' + escapeHtml(str.strTotal) + '</span><span>' + formatMoney(totalIncl) + '</span></div>' +
-      '</div>' +
-      '<a href="/checkout" class="btn btn-primary btn-block">' + escapeHtml(str.strCheckout) + '</a>' +
-      '<a href="' + str.cartUrl + '" class="cart-drawer__view-cart">' + escapeHtml(str.strViewCart) + '</a>';
+      foot.innerHTML = '' +
+        '<div class="coupon-form" data-coupon-form data-str-invalid="' + escapeHtml(str.strInvalidCoupon) + '" data-str-empty-coupon="' + escapeHtml(str.strEmptyCoupon) + '">' +
+          '<input type="text" name="coupon" placeholder="' + escapeHtml(str.strCouponPlaceholder) + '" class="coupon-form__input" autocomplete="off">' +
+          '<button type="button" class="btn btn-ghost coupon-form__btn">' + escapeHtml(str.strApply) + '</button>' +
+        '</div>' +
+        '<div class="cart-drawer__totals">' +
+          '<div class="cart-drawer__totals-row"><span>' + escapeHtml(str.strSubtotalExcl) + '</span><span>' + formatMoney(subtotalExcl) + '</span></div>' +
+          discountHtml +
+          '<div class="cart-drawer__totals-row"><span>' + escapeHtml(str.strVat) + '</span><span>' + formatMoney(taxAmount) + '</span></div>' +
+          '<div class="cart-drawer__totals-row cart-drawer__totals-row--total"><span>' + escapeHtml(str.strTotal) + '</span><span>' + formatMoney(totalIncl) + '</span></div>' +
+        '</div>' +
+        '<a href="/checkout" class="btn btn-primary btn-block">' + escapeHtml(str.strCheckout) + '</a>' +
+        '<a href="' + str.cartUrl + '" class="cart-drawer__view-cart">' + escapeHtml(str.strViewCart) + '</a>';
 
-    initCouponForms();
-    wireDrawerRowEvents();
+      initCouponForms();
+      wireDrawerRowEvents();
+    });
   }
 
   function fetchCart() {
@@ -176,8 +216,7 @@
   function refreshCartDrawer() {
     return fetchCart().then(function (cart) {
       updateCartCount(cart.item_count);
-      renderCartDrawer(cart);
-      return cart;
+      return renderCartDrawer(cart).then(function () { return cart; });
     });
   }
 
@@ -188,8 +227,13 @@
       var dec = row.querySelector('[data-drawer-qty-decrease]');
       var inc = row.querySelector('[data-drawer-qty-increase]');
       var removeBtn = row.querySelector('[data-drawer-remove]');
+      var maxAttr = input && input.getAttribute('max');
+      var maxVal = maxAttr !== null && maxAttr !== undefined && maxAttr !== '' ? parseInt(maxAttr, 10) : null;
+
+      if (input) refreshQtyStepperState(input);
 
       function changeQty(qty) {
+        if (maxVal !== null) qty = Math.min(qty, maxVal);
         row.classList.add('is-updating');
         fetch('/cart/change.js', {
           method: 'POST',
@@ -208,9 +252,17 @@
       if (inc) inc.addEventListener('click', function () {
         changeQty((parseInt(input.value, 10) || 1) + 1);
       });
-      if (input) input.addEventListener('change', function () {
-        changeQty(Math.max(0, parseInt(input.value, 10) || 0));
-      });
+      if (input) {
+        input.addEventListener('change', function () {
+          changeQty(Math.max(0, parseInt(input.value, 10) || 0));
+        });
+        input.addEventListener('input', function () {
+          if (maxVal === null) return;
+          var raw = parseInt(input.value, 10);
+          if (!isNaN(raw) && raw > maxVal) input.value = maxVal;
+          refreshQtyStepperState(input);
+        });
+      }
       if (removeBtn) removeBtn.addEventListener('click', function () { changeQty(0); });
     });
   }
@@ -447,20 +499,25 @@
         if (max !== null && max !== '') v = Math.min(v, parseInt(max, 10));
         return v;
       }
+      refreshQtyStepperState(input);
       if (dec) dec.addEventListener('click', function () {
         input.value = clamp((parseInt(input.value, 10) || minVal) - 1);
+        refreshQtyStepperState(input);
       });
       if (inc) inc.addEventListener('click', function () {
         input.value = clamp((parseInt(input.value, 10) || minVal) + 1);
+        refreshQtyStepperState(input);
       });
       input.addEventListener('change', function () {
         input.value = clamp(parseInt(input.value, 10) || minVal);
+        refreshQtyStepperState(input);
       });
       input.addEventListener('input', function () {
         var raw = parseInt(input.value, 10);
         if (isNaN(raw)) return;
         var clamped = clamp(raw);
         if (clamped !== raw) input.value = clamped;
+        refreshQtyStepperState(input);
       });
     });
   }
@@ -625,6 +682,7 @@
             stockNote.textContent = tracked && template ? template.replace('999999', variant.inventory_quantity) : '';
             stockNote.style.display = tracked ? '' : 'none';
           }
+          refreshQtyStepperState(qtyInput);
         }
         if (mainImg && variant.featured_image && variant.featured_image.src) {
           // The main image carries a srcset from the initial render; browsers prefer
