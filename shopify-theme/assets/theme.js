@@ -108,15 +108,23 @@
 
   var VAT_RATE = 1.15; // Standard Saudi VAT — prices are tax-inclusive on this store
 
-  // Cart line items from /cart.js don't carry inventory data, so cap info for the
-  // cart drawer's qty steppers is fetched per product and cached by handle.
+  // Cart line items from /cart.js don't carry inventory data, and the /products/{handle}.js
+  // AJAX endpoint omits inventory_quantity/inventory_policy the same way `product | json`
+  // does (see main-product.liquid). So cap info for the cart drawer's qty steppers is read
+  // from the same hand-built data-product-json blob the product page embeds, fetched by URL.
   var productDataCache = {};
-  function fetchProductData(handle) {
-    if (productDataCache[handle]) return productDataCache[handle];
-    productDataCache[handle] = fetch('/products/' + handle + '.js', { headers: { Accept: 'application/json' } })
-      .then(function (r) { return r.json(); })
+  function fetchProductData(url) {
+    if (productDataCache[url]) return productDataCache[url];
+    productDataCache[url] = fetch(url, { headers: { Accept: 'text/html' } })
+      .then(function (r) { return r.text(); })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var scriptEl = doc.querySelector('[data-product-json]');
+        if (!scriptEl) return null;
+        try { return JSON.parse(scriptEl.textContent); } catch (e) { return null; }
+      })
       .catch(function () { return null; });
-    return productDataCache[handle];
+    return productDataCache[url];
   }
 
   function getVariantStockMax(productData, variantId) {
@@ -153,8 +161,7 @@
 
     var stockMaxByKey = {};
     return Promise.all(cart.items.map(function (item) {
-      var handle = item.url.split('?')[0].split('/').pop();
-      return fetchProductData(handle).then(function (productData) {
+      return fetchProductData(item.url.split('?')[0]).then(function (productData) {
         stockMaxByKey[item.key] = getVariantStockMax(productData, item.variant_id);
       });
     })).then(function () {

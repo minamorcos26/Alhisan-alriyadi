@@ -11,7 +11,34 @@
 </div>
 
 <div class="container product-detail" data-product-root data-str-in-stock="{{ 'sections.product.in_stock_count' | t: count: 999999 | escape }}" data-str-sold-out="{{ 'sections.product.sold_out' | t | escape }}">
-  <script type="application/json" data-product-json>{{ product | json | replace: '</script>', '<\/script>' }}</script>
+  {%- comment -%}
+    Built by hand rather than `{{ product | json }}`: Shopify's Product/Variant
+    drop-to-json serialization silently omits inventory_quantity and
+    inventory_policy (same fields missing from /products/{handle}.js), even
+    though both are readable via direct Liquid property access below. Without
+    them the JS stock cap can never tell a tracked/deny variant from an
+    untracked one once you switch options.
+  {%- endcomment -%}
+  <script type="application/json" data-product-json>
+    {
+      "options": [{% for option_name in product.options %}{{ option_name | json }}{% unless forloop.last %},{% endunless %}{% endfor %}],
+      "variants": [
+        {%- for variant in product.variants -%}
+          {
+            "id": {{ variant.id | json }},
+            "option1": {{ variant.option1 | json }},
+            "option2": {{ variant.option2 | json }},
+            "option3": {{ variant.option3 | json }},
+            "available": {{ variant.available | json }},
+            "inventory_management": {{ variant.inventory_management | json }},
+            "inventory_policy": {{ variant.inventory_policy | json }},
+            "inventory_quantity": {{ variant.inventory_quantity | json }},
+            "featured_image": {% if variant.featured_image %}{ "src": {{ variant.featured_image | image_url: width: 1200 | json }} }{% else %}null{% endif %}
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>
   <div class="product-detail__media">
     <div class="product-detail__main-image">
       {%- if product.compare_at_price > product.price -%}
