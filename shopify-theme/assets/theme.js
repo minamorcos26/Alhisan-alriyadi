@@ -456,6 +456,12 @@
       input.addEventListener('change', function () {
         input.value = clamp(parseInt(input.value, 10) || minVal);
       });
+      input.addEventListener('input', function () {
+        var raw = parseInt(input.value, 10);
+        if (isNaN(raw)) return;
+        var clamped = clamp(raw);
+        if (clamped !== raw) input.value = clamped;
+      });
     });
   }
 

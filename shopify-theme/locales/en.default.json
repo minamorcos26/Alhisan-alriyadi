@@ -80,7 +80,8 @@
       "heading": "Shop by Department"
     },
     "featured_collection": {
-      "view_all": "View all"
+      "view_all": "View all",
+      "you_might_also_like": "You might also like"
     },
     "main_collection": {
       "filter": "Filter",

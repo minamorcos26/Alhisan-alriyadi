@@ -19,12 +19,18 @@
 
     {%- if coll -%}
       <div class="product-grid product-grid--6col">
-        {%- for product in coll.products limit: 20 -%}
-          {%- render 'product-card', product: product -%}
+        {%- assign shown_count = 0 -%}
+        {%- for item in coll.products limit: 21 -%}
+          {%- unless item == product -%}
+            {%- if shown_count < 20 -%}
+              {%- render 'product-card', product: item -%}
+              {%- assign shown_count = shown_count | plus: 1 -%}
+            {%- endif -%}
+          {%- endunless -%}
         {%- endfor -%}
       </div>
       {%- assign has_more = false -%}
-      {%- for product in coll.products offset: 20 limit: 1 -%}
+      {%- for item in coll.products offset: 20 limit: 1 -%}
         {%- assign has_more = true -%}
       {%- endfor -%}
       {%- if has_more -%}
