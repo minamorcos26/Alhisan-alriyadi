@@ -10,7 +10,7 @@
   </div>
 </div>
 
-<div class="container product-detail" data-product-root data-str-in-stock="{{ 'sections.product.in_stock_count' | t: count: '{count}' | escape }}" data-str-sold-out="{{ 'sections.product.sold_out' | t | escape }}">
+<div class="container product-detail" data-product-root data-str-in-stock="{{ 'sections.product.in_stock_count' | t: count: 999999 | escape }}" data-str-sold-out="{{ 'sections.product.sold_out' | t | escape }}">
   <script type="application/json" data-product-json>{{ product | json | replace: '</script>', '<\/script>' }}</script>
   <div class="product-detail__media">
     <div class="product-detail__main-image">

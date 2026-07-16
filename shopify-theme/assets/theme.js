@@ -616,7 +616,7 @@
           }
           if (stockNote) {
             var template = root.getAttribute('data-str-in-stock');
-            stockNote.textContent = tracked && template ? template.replace('{count}', variant.inventory_quantity) : '';
+            stockNote.textContent = tracked && template ? template.replace('999999', variant.inventory_quantity) : '';
             stockNote.style.display = tracked ? '' : 'none';
           }
         }
