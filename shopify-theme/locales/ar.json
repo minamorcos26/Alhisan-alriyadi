@@ -122,7 +122,8 @@
       "size_guide_col_size": "المقاس",
       "size_guide_col_chest": "الصدر (سم)",
       "size_guide_col_waist": "الخصر (سم)",
-      "size_guide_note": "القياسات تقريبية. لأفضل مقاس، قارن مع قطعة مشابهة تملكها بالفعل."
+      "size_guide_note": "القياسات تقريبية. لأفضل مقاس، قارن مع قطعة مشابهة تملكها بالفعل.",
+      "in_stock_count": "متبقي {{ count }} فقط"
     },
     "cart": {
       "title": "سلة التسوق",

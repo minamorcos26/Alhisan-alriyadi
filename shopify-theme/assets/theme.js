@@ -439,13 +439,22 @@
       var dec = stepper.querySelector('[data-qty-decrease]');
       var inc = stepper.querySelector('[data-qty-increase]');
       if (!input) return;
+      var minVal = parseInt(input.getAttribute('min'), 10) || 1;
+
+      function clamp(v) {
+        var max = input.getAttribute('max');
+        v = Math.max(minVal, v);
+        if (max !== null && max !== '') v = Math.min(v, parseInt(max, 10));
+        return v;
+      }
       if (dec) dec.addEventListener('click', function () {
-        var v = Math.max(1, (parseInt(input.value, 10) || 1) - 1);
-        input.value = v;
+        input.value = clamp((parseInt(input.value, 10) || minVal) - 1);
       });
       if (inc) inc.addEventListener('click', function () {
-        var v = (parseInt(input.value, 10) || 1) + 1;
-        input.value = v;
+        input.value = clamp((parseInt(input.value, 10) || minVal) + 1);
+      });
+      input.addEventListener('change', function () {
+        input.value = clamp(parseInt(input.value, 10) || minVal);
       });
     });
   }
@@ -569,6 +578,8 @@
       var idInput = root.querySelector('[data-variant-id]');
       var submitBtn = root.querySelector('[data-add-to-cart]');
       var mainImg = root.querySelector('.product-detail__main-image img');
+      var qtyInput = root.querySelector('[data-qty-input]');
+      var stockNote = root.querySelector('[data-stock-note]');
       var selected = {};
 
       root.querySelectorAll('[data-option-name].is-selected').forEach(function (el) {
@@ -593,6 +604,21 @@
           submitBtn.textContent = variant.available
             ? submitBtn.getAttribute('data-label-available')
             : submitBtn.getAttribute('data-label-unavailable');
+        }
+        if (qtyInput) {
+          var tracked = variant.inventory_management === 'shopify' && variant.inventory_policy === 'deny';
+          if (tracked) {
+            qtyInput.setAttribute('max', variant.inventory_quantity);
+            var current = parseInt(qtyInput.value, 10) || 1;
+            qtyInput.value = Math.max(1, Math.min(current, variant.inventory_quantity));
+          } else {
+            qtyInput.removeAttribute('max');
+          }
+          if (stockNote) {
+            var template = root.getAttribute('data-str-in-stock');
+            stockNote.textContent = tracked && template ? template.replace('{count}', variant.inventory_quantity) : '';
+            stockNote.style.display = tracked ? '' : 'none';
+          }
         }
         if (mainImg && variant.featured_image && variant.featured_image.src) {
           // The main image carries a srcset from the initial render; browsers prefer

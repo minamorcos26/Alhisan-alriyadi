@@ -122,7 +122,8 @@
       "size_guide_col_size": "Size",
       "size_guide_col_chest": "Chest (cm)",
       "size_guide_col_waist": "Waist (cm)",
-      "size_guide_note": "Measurements are approximate. For the best fit, compare with a similar item you already own."
+      "size_guide_note": "Measurements are approximate. For the best fit, compare with a similar item you already own.",
+      "in_stock_count": "{{ count }} in stock"
     },
     "cart": {
       "title": "Your Cart",

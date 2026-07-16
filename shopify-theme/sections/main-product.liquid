@@ -10,7 +10,7 @@
   </div>
 </div>
 
-<div class="container product-detail" data-product-root>
+<div class="container product-detail" data-product-root data-str-in-stock="{{ 'sections.product.in_stock_count' | t: count: '{count}' | escape }}" data-str-sold-out="{{ 'sections.product.sold_out' | t | escape }}">
   <script type="application/json" data-product-json>{{ product | json | replace: '</script>', '<\/script>' }}</script>
   <div class="product-detail__media">
     <div class="product-detail__main-image">
@@ -123,11 +123,18 @@
         <input type="hidden" name="id" value="{{ product.variants.first.id }}">
       {%- endunless -%}
 
+      {%- liquid
+        assign selected_variant = product.selected_or_first_available_variant
+        assign qty_max = blank
+        if selected_variant.inventory_management == 'shopify' and selected_variant.inventory_policy == 'deny'
+          assign qty_max = selected_variant.inventory_quantity
+        endif
+      -%}
       <div class="product-detail__actions">
         <div class="product-detail__buy-row">
           <div class="qty-stepper">
             <button type="button" class="qty-stepper__btn" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
-            <input type="number" id="Quantity" name="quantity" value="1" min="1" class="qty-stepper__input">
+            <input type="number" id="Quantity" name="quantity" value="1" min="1" {% if qty_max != blank %}max="{{ qty_max }}"{% endif %} class="qty-stepper__input" data-qty-input>
             <button type="button" class="qty-stepper__btn" data-qty-increase aria-label="Increase quantity">+</button>
           </div>
           <button type="submit" class="btn btn-primary product-detail__buy-btn" data-add-to-cart
@@ -137,6 +144,7 @@
             {%- if product.available -%}{{ 'sections.product.add_to_cart' | t }}{%- else -%}{{ 'sections.product.sold_out' | t }}{%- endif -%}
           </button>
         </div>
+        <span class="product-detail__stock-note" data-stock-note {% if qty_max == blank %}style="display:none"{% endif %}>{%- if qty_max != blank -%}{{ 'sections.product.in_stock_count' | t: count: qty_max }}{%- endif -%}</span>
         {%- if product.available -%}
           {{ form | payment_button }}
         {%- endif -%}

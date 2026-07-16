@@ -558,6 +558,7 @@ html[lang="ar"] .product-detail__price { font-family: var(--font-ar); font-weigh
 .product-detail__buy-row { display: flex; gap: var(--space-3); align-items: stretch; }
 .product-detail__buy-row .qty-stepper { flex-shrink: 0; }
 .product-detail__buy-btn { flex: 1; }
+.product-detail__stock-note { font-size: 0.82rem; color: var(--color-ink-muted); margin-block-start: calc(var(--space-3) * -1); }
 .product-detail__actions .shopify-payment-button__button--unbranded {
   background: var(--color-accent) !important; color: #fff !important; border-radius: var(--radius-sm) !important;
   font-family: var(--font-display) !important; font-weight: 700 !important; letter-spacing: 0.02em;
