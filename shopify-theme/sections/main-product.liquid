@@ -1,9 +1,18 @@
 <div class="container">
   <div class="breadcrumb" aria-label="Breadcrumb">
     <a href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
-    {%- if product.collections.first -%}
+    {%- assign breadcrumb_collection = blank -%}
+    {%- for c in product.collections -%}
+      {%- if c.handle != 'all-products-newest' and breadcrumb_collection == blank -%}
+        {%- assign breadcrumb_collection = c -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if breadcrumb_collection == blank -%}
+      {%- assign breadcrumb_collection = product.collections.first -%}
+    {%- endif -%}
+    {%- if breadcrumb_collection -%}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg>
-      <a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+      <a href="{{ breadcrumb_collection.url }}">{{ breadcrumb_collection.title }}</a>
     {%- endif -%}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg>
     <span class="current">{{ product.title }}</span>
