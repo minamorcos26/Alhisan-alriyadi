@@ -19,6 +19,25 @@
   </div>
 </div>
 
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "description": {{ product.description | strip_html | json }},
+    "sku": {{ product.selected_or_first_available_variant.sku | json }},
+    "brand": { "@type": "Brand", "name": {{ product.vendor | default: shop.name | json }} },
+    "image": [{% for image in product.images limit: 6 %}{{ image | image_url: width: 1200 | prepend: 'https:' | json }}{% unless forloop.last %},{% endunless %}{% endfor %}],
+    "offers": {
+      "@type": "Offer",
+      "url": {{ canonical_url | json }},
+      "priceCurrency": {{ cart.currency.iso_code | json }},
+      "price": {{ product.price | divided_by: 100.0 | json }},
+      "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
+    }
+  }
+</script>
+
 <div class="container product-detail" data-product-root data-str-in-stock="{{ 'sections.product.in_stock_count' | t: count: 999999 | escape }}" data-str-sold-out="{{ 'sections.product.sold_out' | t | escape }}">
   {%- comment -%}
     Built by hand rather than `{{ product | json }}`: Shopify's Product/Variant
