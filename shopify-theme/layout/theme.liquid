@@ -8,17 +8,19 @@
     <meta name="description" content="{{ page_description | escape }}">
   {% endif %}
 
+  {%- assign shop_name_ar = 'الحصان الرياضي' -%}
   <title>
     {{ page_title }}
     {%- if current_page != 1 %} &ndash; {{ current_page }}{% endif -%}
-    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    {%- unless page_title contains shop.name or page_title contains shop_name_ar %} &ndash; {{ shop.name }}{% endunless -%}
   </title>
 
-  {%- comment -%} Tell Google which locale/URL pairs are equivalent so it serves the Arabic pages to Saudi searchers instead of treating en/ar as duplicate content. {%- endcomment -%}
-  {%- for language in localization.available_languages -%}
-    <link rel="alternate" hreflang="{{ language.iso_code }}" href="{{ request.origin }}{{ language.root_url }}{{ request.path | remove_first: language.root_url }}">
-  {%- endfor -%}
-  <link rel="alternate" hreflang="x-default" href="{{ request.origin }}{{ request.path }}">
+  {%- comment -%}
+    hreflang tags are intentionally NOT emitted here: Shopify's native
+    localization/Markets feature already injects them via
+    {{ content_for_header }} below. Emitting our own duplicated/conflicting
+    set risks Google discarding both.
+  {%- endcomment -%}
 
   <meta property="og:site_name" content="{{ shop.name }}">
   <meta property="og:type" content="{% if template contains 'product' %}product{% else %}website{% endif %}">
