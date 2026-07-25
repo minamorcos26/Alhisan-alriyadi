@@ -10,12 +10,10 @@
         "item-5": { "type": "item", "settings": { "icon": "kids", "collection": "kids" } },
         "item-6": { "type": "item", "settings": { "icon": "football", "collection": "football-equipment" } },
         "item-7": { "type": "item", "settings": { "icon": "water", "collection": "water-sports" } },
-        "item-8": { "type": "item", "settings": { "icon": "beach", "collection": "beach-equipment" } },
         "item-9": { "type": "item", "settings": { "icon": "gym", "collection": "gym-equipment" } },
-        "item-10": { "type": "item", "settings": { "icon": "racket", "collection": "racket-equipment" } },
-        "item-11": { "type": "item", "settings": { "icon": "shoes", "collection": "running-shoes" } }
+        "item-10": { "type": "item", "settings": { "icon": "racket", "collection": "racket-equipment" } }
       },
-      "block_order": ["item-1", "item-2", "item-3", "item-4", "item-5", "item-6", "item-7", "item-8", "item-9", "item-10", "item-11"],
+      "block_order": ["item-1", "item-2", "item-3", "item-4", "item-5", "item-6", "item-7", "item-9", "item-10"],
       "settings": {}
     },
     "hero-slider": {
