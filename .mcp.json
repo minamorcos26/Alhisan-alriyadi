@@ -6,6 +6,10 @@
       "headers": {
         "x-api-key": "${TWENTYFIRST_API_KEY}"
       }
+    },
+    "figma": {
+      "type": "http",
+      "url": "${FIGMA_MCP_SERVER_URL}"
     }
   }
 }
