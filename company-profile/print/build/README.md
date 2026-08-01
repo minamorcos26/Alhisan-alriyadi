@@ -24,6 +24,16 @@ node render.js            # renders profile.html -> ../Alhisan-Alriyadi-Company-
 
 `render.js` launches Chromium directly from the Playwright browser cache — if `playwright install` was never run in your environment, point `executablePath` in `render.js` at your local Chromium instead.
 
+## Rebuilding the .pptx
+
+The PowerPoint version is generated *from* the same render — it composites the 26 `previews/page-NN.png` images (produced by `render.js` above) onto full-bleed slides at a matching custom A4+bleed slide size. Run it after `render.js`:
+
+```bash
+node build_pptx.js   # -> ../../Alhisan-Alriyadi-Company-Profile.pptx
+```
+
+This keeps the .pptx pixel-identical to the PDF, but its text is flattened into the slide image (not editable in PowerPoint). To change copy, edit `pages.js`, then rerun `build.js` → `render.js` → `build_pptx.js` in that order.
+
 ## Where to drop in real photography
 
 Every diagonal color panel currently shows a faint icon watermark + a small caption reading "Photography — ... to be added". Search `pages.js` for `diagPanel(` and `caption:` to find each spot — replace the panel's icon/texture with a real `<img>` (see `diagPanel()` in `pages.js`) once brand photography is available.

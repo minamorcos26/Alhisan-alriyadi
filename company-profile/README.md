@@ -6,8 +6,8 @@
 |---|---|
 | `print/Alhisan-Alriyadi-Company-Profile.pdf` | **Primary deliverable.** 26-page premium, bilingual (EN/AR), print-ready editorial company profile — A4 + 3mm bleed, full-bleed diagonal brand panels, real brand logo, real embedded fonts (Bebas Neue / Tajawal / Source Sans 3), vector text. Sports-brand-catalogue style (Nike/Adidas/Decathlon energy), not a slide deck. |
 | `print/build/` | Full source for the PDF above (HTML/CSS + a Node/Playwright render pipeline) — see `print/build/README.md` to edit copy or rebuild. |
-| `Alhisan-Alriyadi-Company-Profile.pptx` | Earlier 16:9 slide-deck version of the same 26-page structure. Kept for quick digital/PowerPoint viewing; the PDF above is the current, more premium deliverable. |
-| `DESIGN-SPEC.md` | Page-by-page creative brief (objective/layout/imagery/icons/CTA) written for the earlier .pptx version — still useful as a content reference, but the print PDF's own design (diagonal panels, motion lines, pull-quotes) supersedes its literal layout notes. |
+| `Alhisan-Alriyadi-Company-Profile.pptx` | **The same 26-page editorial design as the PDF, in PowerPoint format.** Each slide is a full-bleed, high-resolution render of the matching PDF page (custom A4+bleed slide size), so logo, fonts, diagonal panels and layout are pixel-identical to the PDF. Trade-off: text is flattened into the image (not editable in PowerPoint) — for text edits, change the copy in `print/build/editorial/pages.js` and regenerate both the PDF and this file (see `print/build/README.md`). |
+| `DESIGN-SPEC.md` | Page-by-page creative brief (objective/layout/imagery/icons/CTA) written for an earlier draft of this profile — still useful as a content reference, but the current PDF/PPTX design (diagonal panels, motion lines, pull-quotes) supersedes its literal layout notes. |
 | `README.md` | This file. |
 
 ## Important — grounded in the real business, not the original brief
