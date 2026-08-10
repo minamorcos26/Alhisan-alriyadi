@@ -90,7 +90,6 @@
     var index = 0;
     var autoplayMs = parseInt(bar.getAttribute('data-autoplay'), 10) || 0;
     var timer = null;
-    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function render() {
       track.style.transform = 'translateX(-' + (index * 100) + '%)';
@@ -103,7 +102,7 @@
     function next() { goTo(index + 1); }
     function prev() { goTo(index - 1); }
     function startAutoplay() {
-      if (!autoplayMs || reduceMotion) return;
+      if (!autoplayMs) return;
       stopAutoplay();
       timer = setInterval(next, autoplayMs);
     }
