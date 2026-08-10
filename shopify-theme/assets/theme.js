@@ -80,6 +80,70 @@
     });
   }
 
+  function initAnnouncementSlider() {
+    var bar = document.querySelector('[data-announcement-slider]');
+    if (!bar) return;
+    var track = bar.querySelector('[data-announcement-track]');
+    if (!track || track.children.length < 2) return;
+    var slideCount = track.children.length;
+    var dots = bar.querySelectorAll('[data-announcement-dot]');
+    var index = 0;
+    var autoplayMs = parseInt(bar.getAttribute('data-autoplay'), 10) || 0;
+    var timer = null;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function render() {
+      track.style.transform = 'translateX(-' + (index * 100) + '%)';
+      dots.forEach(function (dot, i) { dot.classList.toggle('is-active', i === index); });
+    }
+    function goTo(i) {
+      index = (i + slideCount) % slideCount;
+      render();
+    }
+    function next() { goTo(index + 1); }
+    function prev() { goTo(index - 1); }
+    function startAutoplay() {
+      if (!autoplayMs || reduceMotion) return;
+      stopAutoplay();
+      timer = setInterval(next, autoplayMs);
+    }
+    function stopAutoplay() {
+      if (timer) clearInterval(timer);
+      timer = null;
+    }
+
+    dots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () {
+        goTo(i);
+        startAutoplay();
+      });
+    });
+
+    var startX = 0, deltaX = 0, dragging = false;
+    track.addEventListener('pointerdown', function (e) {
+      dragging = true;
+      startX = e.clientX;
+      stopAutoplay();
+    });
+    track.addEventListener('pointermove', function (e) {
+      if (dragging) deltaX = e.clientX - startX;
+    });
+    function endDrag() {
+      if (!dragging) return;
+      dragging = false;
+      if (Math.abs(deltaX) > 40) { deltaX < 0 ? next() : prev(); }
+      deltaX = 0;
+      startAutoplay();
+    }
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointerleave', endDrag);
+    bar.addEventListener('mouseenter', stopAutoplay);
+    bar.addEventListener('mouseleave', startAutoplay);
+
+    render();
+    startAutoplay();
+  }
+
   function updateCartCount(count) {
     document.querySelectorAll('.cart-count').forEach(function (el) {
       el.textContent = count;
@@ -599,6 +663,7 @@
     initDrawerAccordion();
     initSortAutoSubmit();
     initAnnouncement();
+    initAnnouncementSlider();
     initQuickAdd();
     initProductGallery();
     initQtyStepper();

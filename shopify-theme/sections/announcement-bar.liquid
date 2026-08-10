@@ -1,6 +1,19 @@
-<div class="announcement" role="region" aria-label="Announcement" data-announcement>
-  <div class="container announcement__track">
-    <span>{% if section.settings.message != blank %}{{ section.settings.message }}{% else %}{{ 'general.announcement.message' | t }}{% endif %}</span>
+<div class="announcement" role="region" aria-label="Announcement" data-announcement data-announcement-slider data-autoplay="4000">
+  <div class="container announcement__inner">
+    <div class="announcement__viewport">
+      <div class="announcement__track" data-announcement-track>
+        <div class="announcement__slide">
+          <span>{% if section.settings.message != blank %}{{ section.settings.message }}{% else %}{{ 'general.announcement.message' | t }}{% endif %}</span>
+        </div>
+        <div class="announcement__slide">
+          <span>{% if section.settings.message_2 != blank %}{{ section.settings.message_2 }}{% else %}{{ 'general.announcement.business_inquiry' | t }}{% endif %}</span>
+        </div>
+      </div>
+    </div>
+    <div class="announcement__dots" data-announcement-dots aria-hidden="true">
+      <span class="announcement__dot is-active" data-announcement-dot></span>
+      <span class="announcement__dot" data-announcement-dot></span>
+    </div>
     <button class="announcement__close" aria-label="{{ 'general.announcement.close' | t }}" data-announcement-close>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
@@ -14,8 +27,14 @@
     {
       "type": "text",
       "id": "message",
-      "label": "Message",
+      "label": "Message 1",
       "info": "Leave blank to use the default translated message."
+    },
+    {
+      "type": "text",
+      "id": "message_2",
+      "label": "Message 2",
+      "info": "Leave blank to use the default translated business inquiry message."
     }
   ],
   "presets": [
