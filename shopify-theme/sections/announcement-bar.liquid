@@ -3,10 +3,10 @@
     <div class="announcement__viewport">
       <div class="announcement__track" data-announcement-track>
         <div class="announcement__slide">
-          <span>{% if section.settings.message != blank %}{{ section.settings.message }}{% else %}{{ 'general.announcement.message' | t }}{% endif %}</span>
+          <span>{% if section.settings.message_2 != blank %}{{ section.settings.message_2 }}{% else %}{{ 'general.announcement.business_inquiry' | t }}{% endif %}</span>
         </div>
         <div class="announcement__slide">
-          <span>{% if section.settings.message_2 != blank %}{{ section.settings.message_2 }}{% else %}{{ 'general.announcement.business_inquiry' | t }}{% endif %}</span>
+          <span>{% if section.settings.message != blank %}{{ section.settings.message }}{% else %}{{ 'general.announcement.message' | t }}{% endif %}</span>
         </div>
       </div>
     </div>
